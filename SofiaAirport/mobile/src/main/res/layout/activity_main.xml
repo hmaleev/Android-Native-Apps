@@ -1,0 +1,47 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".MainActivity"
+    android:orientation="vertical">
+
+    <ImageView
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:id="@+id/arrivalsImageView"
+        android:background="#00f"
+        android:contentDescription="@string/PlaneLandingImageContentDescription"
+        android:clickable="false"
+        android:layout_weight="5"/>
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="50dp"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/arrivalsLabel"
+        android:id="@+id/arrivalsTextView"
+        android:clickable="false"
+        android:layout_margin="0dp"
+        android:paddingLeft="150dp"
+        android:paddingTop="15dp"
+        android:layout_weight="1" />
+
+    <ImageView
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:id="@+id/departuresImageView"
+        android:background="#00f"
+        android:contentDescription="@string/planeTakeOffImageContentDescription"
+        android:layout_weight="5" />
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="50dp"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/departuresLabel"
+        android:id="@+id/departuresTextView"
+        android:paddingLeft="150dp"
+        android:paddingTop="15dp"
+        android:layout_weight="1" />
+</LinearLayout>

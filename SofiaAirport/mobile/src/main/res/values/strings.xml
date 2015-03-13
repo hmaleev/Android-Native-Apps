@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">SofiaAirport</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="arrivalsLabel">Arrivals</string>
+    <string name="departuresLabel">Departures</string>
+    <string name="planeTakeOffImageContentDescription">plane take off</string>
+    <string name="PlaneLandingImageContentDescription">plane landing</string>
+    <string name="title_activity_arrivals">Arrivals</string>
+    <string name="title_activity_departures">Departures</string>
+
+</resources>
