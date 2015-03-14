@@ -51,7 +51,8 @@ public class Arrivals extends ActionBarActivity {
                                 Flight flight = new Flight();
                                 flight.ArrivesFrom = x.getString("ArrivesFrom");
                                 flight.ExpectedTime = x.getString("ExpectedTime");
-                                flight.Flight = x.getString("Flight");
+                                flight.Flight = x.getString("FlightNo");
+                                flight.DepartsFor = x.getString("DepartsFor");
                                 flight.GroundOperator = x.getString("GroundOperator");
                                 flight.MoreDetails = x.getString("MoreDetails");
                                 flight.PlaneType = x.getString("PlaneType");
