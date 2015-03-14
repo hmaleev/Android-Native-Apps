@@ -1,0 +1,73 @@
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    tools:context="com.hmaleev.sofiaairport.FlightDetailsActivity">
+
+    <TableRow android:layout_height="45dp">
+        <TextView android:text="@string/scheduledTimeLabel" android:layout_width="200dp"
+            android:id="@+id/scheduledTimeLabel"
+            android:layout_height="40dp" />
+        <TextView  android:layout_width="wrap_content"
+            android:id="@+id/scheduledTimeValue"
+            android:layout_height="wrap_content" />
+    </TableRow>
+
+    <TableRow android:layout_height="45dp">
+        <TextView android:text="@string/flightNoLabel" android:layout_width="200dp"
+            android:id="@+id/flightNoLabel"
+            android:layout_height="40dp" />
+        <TextView  android:layout_width="wrap_content"
+            android:id="@+id/flightNoValue"
+            android:layout_height="wrap_content" />
+    </TableRow>
+
+    <TableRow android:layout_height="45dp">
+        <TextView android:text="@string/arrivesFromLabel" android:layout_width="200dp"
+            android:id="@+id/arrivesFromLabel"
+            android:layout_height="40dp" />
+        <TextView android:layout_width="wrap_content"
+            android:id="@+id/arrivesFromValue"
+            android:layout_height="wrap_content" />
+    </TableRow>
+
+    <TableRow android:layout_height="45dp">
+        <TextView android:text="@string/expectedTimeLabel" android:layout_width="200dp"
+            android:id="@+id/expectedTimeLabel"
+            android:layout_height="40dp" />
+        <TextView  android:layout_width="wrap_content"
+            android:id="@+id/expectedTimeValue"
+            android:layout_height="wrap_content" />
+    </TableRow>
+
+    <TableRow android:layout_height="45dp">
+        <TextView android:text="@string/statusLabel" android:layout_width="200dp"
+            android:id="@+id/statusLabel"
+            android:layout_height="40dp" />
+        <TextView  android:layout_width="wrap_content"
+            android:id="@+id/statusValue"
+            android:layout_height="wrap_content" />
+    </TableRow>
+
+    <TableRow android:layout_height="45dp">
+        <TextView android:text="@string/terminalLabel" android:layout_width="200dp"
+            android:id="@+id/terminalLabel"
+            android:layout_height="40dp" />
+        <TextView  android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </TableRow>
+
+    <TableRow android:layout_height="45dp">
+        <TextView android:text="@string/groundOperatorLabel" android:layout_width="200dp"
+            android:id="@+id/groundOperatorLabel"
+            android:layout_height="40dp" />
+        <TextView  android:layout_width="wrap_content"
+            android:id="@+id/groundOperatorValue"
+            android:layout_height="wrap_content" />
+    </TableRow>
+
+
+
+</TableLayout>

@@ -1,7 +1,8 @@
 package com.hmaleev.sofiaairport;
 
+import android.app.Activity;
 import android.content.Context;
-import android.support.v7.app.ActionBarActivity;
+//import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -13,6 +14,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
 import com.hmaleev.sofiaairport.adapters.ArrivalsAdapter;
+import com.hmaleev.sofiaairport.adapters.DeparturesAdapter;
 import com.hmaleev.sofiaairport.models.Flight;
 
 import org.json.JSONArray;
@@ -23,7 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class Departures extends ActionBarActivity {
+public class Departures extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,17 +49,17 @@ public class Departures extends ActionBarActivity {
                             try {
                                 JSONObject x = response.getJSONObject(i);
                                 Flight flight = new Flight();
-                                flight.ArrivesFrom = x.getString("ArrivesFrom");
-                                flight.ExpectedTime = x.getString("ExpectedTime");
-                                flight.Flight = x.getString("FlightNo");
-                                flight.DepartsFor = x.getString("DepartsFor");
-                                flight.GroundOperator = x.getString("GroundOperator");
-                                flight.MoreDetails = x.getString("MoreDetails");
-                                flight.PlaneType = x.getString("PlaneType");
-                                flight.ScheduledDate = x.getString("ScheduledDate");
-                                flight.ScheduledTime = x.getString("ScheduledTime");
-                                flight.Status = x.getString("Status");
-                                flight.Terminal = x.getString("Terminal");
+                                flight.setDepartsFor(x.getString("DepartsFor"));
+                                flight.setExpectedTime( x.getString("ExpectedTime") );
+                                flight.setFlightNo( x.getString("FlightNo") );
+                                flight.setDepartsFor( x.getString("DepartsFor") );
+                                flight.setGroundOperator( x.getString("GroundOperator") );
+                                flight.setMoreDetails( x.getString("MoreDetails") );
+                                flight.setPlaneType( x.getString("PlaneType"));
+                                flight.setScheduledDate( x.getString("ScheduledDate") );
+                                flight.setScheduledTime( x.getString("ScheduledTime") );
+                                flight.setStatus( x.getString("Status") );
+                                flight.setTerminal( x.getString("Terminal") );
                                 listData.add(flight);
 
                             } catch (JSONException e) {
@@ -66,7 +68,7 @@ public class Departures extends ActionBarActivity {
                         }
                         final ListView departuresListView = (ListView) findViewById(R.id.departuresListView);
 
-                        final ArrivalsAdapter adapter = new ArrivalsAdapter(ctx, listData);
+                        final DeparturesAdapter adapter = new DeparturesAdapter(ctx, listData);
                         departuresListView.setAdapter(adapter);
                         adapter.notifyDataSetChanged();
 

@@ -1,7 +1,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:paddingLeft="@dimen/abc_action_bar_default_padding_material"
-    android:paddingRight="@dimen/abc_action_bar_default_padding_material"
+    android:layout_height="match_parent" android:paddingLeft="4dp"
+    android:paddingRight="4dp"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
     tools:context="com.hmaleev.sofiaairport.Arrivals">
@@ -12,5 +12,6 @@
         android:id="@+id/arrivalsListView"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true" />
+        android:layout_alignParentTop="true"
+        android:clickable="true" />
 </RelativeLayout>

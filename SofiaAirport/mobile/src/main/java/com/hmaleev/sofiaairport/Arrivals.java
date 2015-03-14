@@ -1,10 +1,14 @@
 package com.hmaleev.sofiaairport;
 
+import android.app.ActionBar;
+import android.app.Activity;
 import android.content.Context;
-import android.support.v7.app.ActionBarActivity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.android.volley.Request;
@@ -25,7 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class Arrivals extends ActionBarActivity {
+public class Arrivals extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,23 +48,23 @@ public class Arrivals extends ActionBarActivity {
 
                     @Override
                     public void onResponse(JSONArray response) {
-                        List<Object> result = new ArrayList<Object>();
+
                         for (int i = 0; i < response.length(); i++) {
                             try {
                                 JSONObject x = response.getJSONObject(i);
                                 Flight flight = new Flight();
-                                flight.ArrivesFrom = x.getString("ArrivesFrom");
-                                flight.ExpectedTime = x.getString("ExpectedTime");
-                                flight.Flight = x.getString("FlightNo");
-                                flight.DepartsFor = x.getString("DepartsFor");
-                                flight.GroundOperator = x.getString("GroundOperator");
-                                flight.MoreDetails = x.getString("MoreDetails");
-                                flight.PlaneType = x.getString("PlaneType");
-                                flight.ScheduledDate = x.getString("ScheduledDate");
-                                flight.ScheduledTime = x.getString("ScheduledTime");
-                                flight.Status = x.getString("Status");
-                                flight.Terminal = x.getString("Terminal");
-                                listData.add(flight);
+                                flight.setArrivesFrom( x.getString("ArrivesFrom") );
+                                flight.setExpectedTime( x.getString("ExpectedTime") );
+                                flight.setFlightNo( x.getString("FlightNo") );
+                                flight.setDepartsFor( x.getString("DepartsFor") );
+                                flight.setGroundOperator( x.getString("GroundOperator") );
+                                flight.setMoreDetails( x.getString("MoreDetails") );
+                                flight.setPlaneType( x.getString("PlaneType"));
+                                flight.setScheduledDate( x.getString("ScheduledDate") );
+                                flight.setScheduledTime( x.getString("ScheduledTime") );
+                                flight.setStatus( x.getString("Status") );
+                                flight.setTerminal( x.getString("Terminal") );
+                                listData.add( flight );
 
                             } catch (JSONException e) {
                             }
@@ -70,6 +74,20 @@ public class Arrivals extends ActionBarActivity {
 
                         final ArrivalsAdapter adapter = new ArrivalsAdapter(ctx, listData);
                         arrivalsListView.setAdapter(adapter);
+
+                        arrivalsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+                            @Override
+                            public void onItemClick(AdapterView<?> currentAdapter, View currentView, int position, long arg3) {
+
+                                Flight currentFlight = (Flight) arrivalsListView.getItemAtPosition(position);
+                                Intent nextScreen = new Intent(getApplicationContext(), FlightDetailsActivity.class);
+                                nextScreen.putExtra("flightDetails",currentFlight);
+
+                                startActivity(nextScreen);
+                            }
+                        });
+
                         adapter.notifyDataSetChanged();
 
 

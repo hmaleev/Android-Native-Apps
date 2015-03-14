@@ -34,17 +34,16 @@ public class DeparturesAdapter extends ArrayAdapter<Flight> {
             listRowView = inflater.inflate(R.layout.arrivals_list_row_even, null);
         }
 
+        Flight flight = values.get(position);
 
-
-        Flight c = values.get(position);
         TextView expectedTime = (TextView) listRowView.findViewById(R.id.Time);
-        expectedTime.setText(c.ExpectedTime);
+        expectedTime.setText(flight.getScheduledTime());
         TextView from = (TextView) listRowView.findViewById(R.id.From);
-        from.setText(c.ArrivesFrom);
+        from.setText(flight.getDepartsFor());
         TextView status = (TextView) listRowView.findViewById(R.id.Status);
-        status.setText(c.Status);
+        status.setText(flight.getStatus());
         TextView terminal = (TextView) listRowView.findViewById(R.id.Terminal);
-        terminal.setText(c.Terminal);
+        terminal.setText(flight.getTerminal());
 
         return listRowView;
     }

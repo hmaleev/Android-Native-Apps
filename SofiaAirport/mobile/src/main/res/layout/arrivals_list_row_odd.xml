@@ -1,6 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="50dp"
+    android:padding="2dp"
+    android:background="#ff4655ff">
 
-</LinearLayout>
+    <TextView
+        android:id="@+id/Time"
+        android:layout_width="60dp"
+        android:layout_height="45dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignWithParentIfMissing="true"
+        android:gravity="center_vertical"
+        android:text="@string/scheduledTimeLabel"
+        android:textSize="16sp"
+        android:textColor="#ffffffff" />
+
+    <TextView
+        android:layout_width="120dp"
+        android:layout_height="45dp"
+        android:gravity="center_vertical"
+        android:text="@string/arrivesFromLabel"
+        android:id="@+id/From"
+        android:textColor="#ffffffff"
+        android:textSize="16sp"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/Time"
+        android:layout_toEndOf="@+id/Time" />
+
+    <TextView
+        android:layout_width="100dp"
+        android:layout_height="45dp"
+        android:gravity="center_vertical"
+        android:text="@string/statusLabel"
+        android:id="@+id/Status"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/From"
+        android:textColor="#ffffffff"
+        android:textSize="16sp" />
+
+    <TextView
+        android:layout_width="30dp"
+        android:layout_height="45dp"
+        android:gravity="center_vertical"
+        android:text="@string/terminalLabel"
+        android:id="@+id/Terminal"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/Status"
+        android:textColor="#ffffffff"
+        android:textSize="16sp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+</RelativeLayout>

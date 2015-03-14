@@ -10,5 +10,13 @@
     <string name="PlaneLandingImageContentDescription">plane landing</string>
     <string name="title_activity_arrivals">Arrivals</string>
     <string name="title_activity_departures">Departures</string>
+    <string name="title_activity_flight_details">FlightDetailsActivity</string>
+    <string name="scheduledTimeLabel">Scheduled Time</string>
+    <string name="flightNoLabel">Flight No</string>
+    <string name="arrivesFromLabel">From</string>
+    <string name="expectedTimeLabel">Expected Time</string>
+    <string name="statusLabel">Status</string>
+    <string name="terminalLabel">Terminal</string>
+    <string name="groundOperatorLabel">Ground Operator</string>
 
 </resources>
