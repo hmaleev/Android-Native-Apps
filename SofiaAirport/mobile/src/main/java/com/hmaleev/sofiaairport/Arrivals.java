@@ -8,7 +8,6 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -28,7 +27,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-
 public class Arrivals extends Activity {
 
     private SwipeRefreshLayout swipeContainer;
@@ -41,7 +39,6 @@ public class Arrivals extends Activity {
 
         final String url = "http://sofiaairport.apphb.com/api/arrivals/getall?size=1";
         final Context ctx = this;
-// Request a string response from the provided URL.
         final ArrayList<Flight> listData = new ArrayList<Flight>();
         final RequestQueue rq = Volley.newRequestQueue(this);
         final JsonArrayRequest jReq = new JsonArrayRequest(url,
@@ -49,32 +46,16 @@ public class Arrivals extends Activity {
 
                     @Override
                     public void onResponse(JSONArray response) {
-
                         updateFlightData(response, listData);
-                        final ListView arrivalsListView = (ListView) findViewById(R.id.lvArrivals);
 
-                        LayoutInflater inflater = getLayoutInflater();
-                        ViewGroup header = (ViewGroup)inflater.inflate(R.layout.arrivals_list_row_header, arrivalsListView, false);
-                        arrivalsListView.addHeaderView(header, null, false);
+                        final ListView arrivalsListView = (ListView) findViewById(R.id.lvArrivals);
+                        addListViewHeader(arrivalsListView);
 
                         final ArrivalsAdapter adapter = new ArrivalsAdapter(ctx, listData);
-
                         arrivalsListView.setAdapter(adapter);
-                        arrivalsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
-                            @Override
-                            public void onItemClick(AdapterView<?> currentAdapter, View currentView, int position, long arg3) {
-
-                                Flight currentFlight = (Flight) arrivalsListView.getItemAtPosition(position);
-                                Intent nextScreen = new Intent(getApplicationContext(), FlightDetailsActivity.class);
-                                nextScreen.putExtra("flightDetails", currentFlight);
-
-                                startActivity(nextScreen);
-                            }
-                        });
-
+                        navigateToNextViewClickHandler(arrivalsListView);
                         adapter.notifyDataSetChanged();
-
 
                     }
                 }, new Response.ErrorListener() {
@@ -82,7 +63,6 @@ public class Arrivals extends Activity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 // Handle error
-
             }
         });
 
@@ -96,39 +76,20 @@ public class Arrivals extends Activity {
                 // Your code to refresh the list here.
                 // Make sure you call swipeContainer.setRefreshing(false)
                 // once the network request has completed successfully.
-                /*final ListView arrivalsListView = (ListView) findViewById(R.id.lvArrivals);
-                LayoutInflater inflater = getLayoutInflater();
-                ViewGroup header = (ViewGroup)inflater.inflate(R.layout.arrivals_list_row_header, arrivalsListView, false);
-                arrivalsListView.addHeaderView(header, null, false);*/
 
-                listData.clear();
+
                 final JsonArrayRequest jReq = new JsonArrayRequest(url,
                         new Response.Listener<JSONArray>() {
 
                             @Override
                             public void onResponse(JSONArray response) {
-
+                                listData.clear();
                                 updateFlightData(response, listData);
                                 final ListView arrivalsListView = (ListView) findViewById(R.id.lvArrivals);
-
-
-
-
                                 final ArrivalsAdapter adapter = new ArrivalsAdapter(ctx, listData);
 
                                 arrivalsListView.setAdapter(adapter);
-                                arrivalsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-                                    @Override
-                                    public void onItemClick(AdapterView<?> currentAdapter, View currentView, int position, long arg3) {
-
-                                        Flight currentFlight = (Flight) arrivalsListView.getItemAtPosition(position);
-                                        Intent nextScreen = new Intent(getApplicationContext(), FlightDetailsActivity.class);
-                                        nextScreen.putExtra("flightDetails", currentFlight);
-
-                                        startActivity(nextScreen);
-                                    }
-                                });
+                                navigateToNextViewClickHandler(arrivalsListView);
 
                                 adapter.notifyDataSetChanged();
                                 swipeContainer.setRefreshing(false);
@@ -147,10 +108,30 @@ public class Arrivals extends Activity {
 
         });
         // Configure the refreshing colors
-        swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
-                R.color.airportBlueLight,
+        swipeContainer.setColorSchemeResources(R.color.airportBlueLight,
                 R.color.airportBlueDark);
         }
+
+    private void addListViewHeader(ListView arrivalsListView) {
+        LayoutInflater inflater = getLayoutInflater();
+        ViewGroup header = (ViewGroup)inflater.inflate(R.layout.arrivals_list_row_header, arrivalsListView, false);
+        arrivalsListView.addHeaderView(header, null, false);
+    }
+
+    private void navigateToNextViewClickHandler(final ListView arrivalsListView) {
+        arrivalsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> currentAdapter, View currentView, int position, long arg3) {
+
+                Flight currentFlight = (Flight) arrivalsListView.getItemAtPosition(position);
+                Intent nextScreen = new Intent(getApplicationContext(), FlightDetailsActivity.class);
+                nextScreen.putExtra("flightDetails", currentFlight);
+
+                startActivity(nextScreen);
+            }
+        });
+    }
 
 
     private void updateFlightData(JSONArray response, ArrayList<Flight> listData) {
