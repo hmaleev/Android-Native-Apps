@@ -1,6 +1,5 @@
 package com.hmaleev.sofiaairport;
 
-import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -11,12 +10,10 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.hmaleev.sofiaairport.adapters.ArrivalsAdapter;
 import com.hmaleev.sofiaairport.models.Flight;
@@ -26,7 +23,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.List;
 
 
 public class Arrivals extends Activity {
@@ -70,7 +66,7 @@ public class Arrivals extends Activity {
                             }
 
                         }
-                        final ListView arrivalsListView = (ListView) findViewById(R.id.arrivalsListView);
+                        final ListView arrivalsListView = (ListView) findViewById(R.id.lvArrivals);
 
                         final ArrivalsAdapter adapter = new ArrivalsAdapter(ctx, listData);
                         arrivalsListView.setAdapter(adapter);

@@ -6,6 +6,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import com.hmaleev.sofiaairport.models.Flight;
+
 
 public class FlightDetailsActivity extends Activity {
 
@@ -13,7 +15,28 @@ public class FlightDetailsActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_flight_details);
-        TextView arrivalsTextView = (TextView)findViewById(R.id.arrivalsTextView);
+        Flight flight = (Flight) getIntent().getSerializableExtra("flightDetails");
+
+        TextView scheduledTime = (TextView)findViewById(R.id.scheduledTimeValue);
+        scheduledTime.setText(flight.getScheduledTime());
+
+        TextView flightNo = (TextView)findViewById(R.id.flightNoValue);
+        flightNo.setText(flight.getFlightNo());
+
+        TextView arrivesFrom = (TextView)findViewById(R.id.arrivesFromValue);
+        arrivesFrom.setText(flight.getArrivesFrom());
+
+        TextView expectedTime = (TextView)findViewById(R.id.expectedTimeValue);
+        expectedTime.setText(flight.getExpectedTime());
+
+        TextView status = (TextView)findViewById(R.id.statusValue);
+        status.setText(flight.getStatus());
+
+        TextView terminal = (TextView)findViewById(R.id.terminalValue);
+        terminal.setText(flight.getTerminal());
+
+        TextView groundOperator = (TextView)findViewById(R.id.groundOperatorValue);
+        groundOperator.setText(flight.getGroundOperator());
     }
 
 

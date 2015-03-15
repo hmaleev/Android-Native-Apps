@@ -13,7 +13,6 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
-import com.hmaleev.sofiaairport.adapters.ArrivalsAdapter;
 import com.hmaleev.sofiaairport.adapters.DeparturesAdapter;
 import com.hmaleev.sofiaairport.models.Flight;
 
@@ -66,7 +65,7 @@ public class Departures extends Activity {
                             }
 
                         }
-                        final ListView departuresListView = (ListView) findViewById(R.id.departuresListView);
+                        final ListView departuresListView = (ListView) findViewById(R.id.lvDepartures);
 
                         final DeparturesAdapter adapter = new DeparturesAdapter(ctx, listData);
                         departuresListView.setAdapter(adapter);

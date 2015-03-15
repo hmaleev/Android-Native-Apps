@@ -31,18 +31,23 @@ public class DeparturesAdapter extends ArrayAdapter<Flight> {
         View listRowView = convertView;
         if (listRowView == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            listRowView = inflater.inflate(R.layout.arrivals_list_row_even, null);
+            if(position % 2 == 0){
+                listRowView = inflater.inflate(R.layout.arrivals_list_row_even, null);
+            }
+            else {
+                listRowView = inflater.inflate(R.layout.arrivals_list_row_odd, null);
+            }
         }
 
         Flight flight = values.get(position);
 
-        TextView expectedTime = (TextView) listRowView.findViewById(R.id.Time);
+        TextView expectedTime = (TextView) listRowView.findViewById(R.id.tvTime);
         expectedTime.setText(flight.getScheduledTime());
-        TextView from = (TextView) listRowView.findViewById(R.id.From);
+        TextView from = (TextView) listRowView.findViewById(R.id.tvFrom);
         from.setText(flight.getDepartsFor());
-        TextView status = (TextView) listRowView.findViewById(R.id.Status);
+        TextView status = (TextView) listRowView.findViewById(R.id.tvStatus);
         status.setText(flight.getStatus());
-        TextView terminal = (TextView) listRowView.findViewById(R.id.Terminal);
+        TextView terminal = (TextView) listRowView.findViewById(R.id.tvTerminal);
         terminal.setText(flight.getTerminal());
 
         return listRowView;
