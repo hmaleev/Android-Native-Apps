@@ -28,6 +28,20 @@ public class ArrivalsAdapter extends ArrayAdapter<Flight> {
         View v = convertView;
         if (v == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+          /*  if (position == 0) {
+                v = inflater.inflate(R.layout.arrivals_list_row_header, null);
+
+                TextView expectedTimeLabe = (TextView) v.findViewById(R.id.tvTime);
+                expectedTimeLabe.setText(R.string.expectedTimeHeaderLabel);
+                TextView fromHeader = (TextView) v.findViewById(R.id.tvFrom);
+                fromHeader.setText(R.string.arrivesFromHeaderLabel);
+                TextView statusHeader = (TextView) v.findViewById(R.id.tvStatus);
+                statusHeader.setText(R.string.statusHeaderLabel);
+                TextView terminal = (TextView) v.findViewById(R.id.tvTerminal);
+                terminal.setText(R.string.terminaHeaderlLabel);
+
+                return v;
+            }*/
             if(position % 2 == 0){
                 v = inflater.inflate(R.layout.arrivals_list_row_even, null);
             }
@@ -38,7 +52,7 @@ public class ArrivalsAdapter extends ArrayAdapter<Flight> {
 
         Flight flight = values.get(position);
         TextView expectedTime = (TextView) v.findViewById(R.id.tvTime);
-        expectedTime.setText(flight.getScheduledTime());
+        expectedTime.setText(flight.getExpectedTime());
         TextView from = (TextView) v.findViewById(R.id.tvFrom);
         from.setText(flight.getArrivesFrom());
         TextView status = (TextView) v.findViewById(R.id.tvStatus);

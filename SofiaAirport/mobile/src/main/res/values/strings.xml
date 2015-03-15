@@ -19,4 +19,9 @@
     <string name="groundOperatorLabel">Ground Operator</string>
     <string name="scheduledTimeDetailedViewLabel">Scheduled Time</string>
     <string name="expectedTimeDetailedViewLabel">Expected Time</string>
+    <string name="expectedTimeHeaderLabel">Time</string>
+    <string name="arrivesFromHeaderLabel">From</string>
+    <string name="flightNoHeaderLabel">Flight No</string>
+    <string name="statusHeaderLabel">Status</string>
+    <string name="terminaHeaderlLabel">Terminal</string>
 </resources>

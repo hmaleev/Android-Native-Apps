@@ -13,7 +13,7 @@
         android:background="#00f"
         android:contentDescription="@string/PlaneLandingImageContentDescription"
         android:clickable="false"
-        android:layout_weight="5"/>
+        android:layout_weight="4"/>
 
     <TextView
         android:layout_width="fill_parent"
@@ -23,9 +23,10 @@
         android:id="@+id/arrivalsTextView"
         android:clickable="false"
         android:layout_margin="0dp"
-        android:paddingLeft="150dp"
-        android:paddingTop="15dp"
-        android:layout_weight="1" />
+        android:layout_weight="0.5"
+        android:textSize="30sp"
+        android:paddingTop="5dp"
+        android:gravity="center_horizontal" />
 
     <ImageView
         android:layout_width="fill_parent"
@@ -33,7 +34,7 @@
         android:id="@+id/departuresImageView"
         android:background="#00f"
         android:contentDescription="@string/planeTakeOffImageContentDescription"
-        android:layout_weight="5" />
+        android:layout_weight="4" />
 
     <TextView
         android:layout_width="fill_parent"
@@ -41,7 +42,8 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="@string/departuresLabel"
         android:id="@+id/departuresTextView"
-        android:paddingLeft="150dp"
-        android:paddingTop="15dp"
-        android:layout_weight="1" />
+        android:layout_weight="0.5"
+        android:textSize="30sp"
+        android:paddingTop="5dp"
+        android:gravity="center_horizontal" />
 </LinearLayout>

@@ -4,9 +4,13 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
@@ -27,50 +31,35 @@ import java.util.ArrayList;
 
 public class Arrivals extends Activity {
 
+    private SwipeRefreshLayout swipeContainer;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_arrivals);
 
-// Instantiate the RequestQueue.
-        RequestQueue queue = Volley.newRequestQueue(this);
-        String url ="http://sofiaairport.apphb.com/api/arrivals/getall?size=1";
+
+        final String url = "http://sofiaairport.apphb.com/api/arrivals/getall?size=1";
         final Context ctx = this;
 // Request a string response from the provided URL.
         final ArrayList<Flight> listData = new ArrayList<Flight>();
-        RequestQueue rq = Volley.newRequestQueue(this);
-        JsonArrayRequest jReq = new JsonArrayRequest(url,
+        final RequestQueue rq = Volley.newRequestQueue(this);
+        final JsonArrayRequest jReq = new JsonArrayRequest(url,
                 new Response.Listener<JSONArray>() {
 
                     @Override
                     public void onResponse(JSONArray response) {
 
-                        for (int i = 0; i < response.length(); i++) {
-                            try {
-                                JSONObject x = response.getJSONObject(i);
-                                Flight flight = new Flight();
-                                flight.setArrivesFrom( x.getString("ArrivesFrom") );
-                                flight.setExpectedTime( x.getString("ExpectedTime") );
-                                flight.setFlightNo( x.getString("FlightNo") );
-                                flight.setDepartsFor( x.getString("DepartsFor") );
-                                flight.setGroundOperator( x.getString("GroundOperator") );
-                                flight.setMoreDetails( x.getString("MoreDetails") );
-                                flight.setPlaneType( x.getString("PlaneType"));
-                                flight.setScheduledDate( x.getString("ScheduledDate") );
-                                flight.setScheduledTime( x.getString("ScheduledTime") );
-                                flight.setStatus( x.getString("Status") );
-                                flight.setTerminal( x.getString("Terminal") );
-                                listData.add( flight );
-
-                            } catch (JSONException e) {
-                            }
-
-                        }
+                        updateFlightData(response, listData);
                         final ListView arrivalsListView = (ListView) findViewById(R.id.lvArrivals);
 
-                        final ArrivalsAdapter adapter = new ArrivalsAdapter(ctx, listData);
-                        arrivalsListView.setAdapter(adapter);
+                        LayoutInflater inflater = getLayoutInflater();
+                        ViewGroup header = (ViewGroup)inflater.inflate(R.layout.arrivals_list_row_header, arrivalsListView, false);
+                        arrivalsListView.addHeaderView(header, null, false);
 
+                        final ArrivalsAdapter adapter = new ArrivalsAdapter(ctx, listData);
+
+                        arrivalsListView.setAdapter(adapter);
                         arrivalsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
                             @Override
@@ -78,7 +67,7 @@ public class Arrivals extends Activity {
 
                                 Flight currentFlight = (Flight) arrivalsListView.getItemAtPosition(position);
                                 Intent nextScreen = new Intent(getApplicationContext(), FlightDetailsActivity.class);
-                                nextScreen.putExtra("flightDetails",currentFlight);
+                                nextScreen.putExtra("flightDetails", currentFlight);
 
                                 startActivity(nextScreen);
                             }
@@ -99,8 +88,94 @@ public class Arrivals extends Activity {
 
         rq.add(jReq);
 
+        swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
+        // Setup refresh listener which triggers new data loading
+        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                // Your code to refresh the list here.
+                // Make sure you call swipeContainer.setRefreshing(false)
+                // once the network request has completed successfully.
+                /*final ListView arrivalsListView = (ListView) findViewById(R.id.lvArrivals);
+                LayoutInflater inflater = getLayoutInflater();
+                ViewGroup header = (ViewGroup)inflater.inflate(R.layout.arrivals_list_row_header, arrivalsListView, false);
+                arrivalsListView.addHeaderView(header, null, false);*/
+
+                listData.clear();
+                final JsonArrayRequest jReq = new JsonArrayRequest(url,
+                        new Response.Listener<JSONArray>() {
+
+                            @Override
+                            public void onResponse(JSONArray response) {
+
+                                updateFlightData(response, listData);
+                                final ListView arrivalsListView = (ListView) findViewById(R.id.lvArrivals);
 
 
+
+
+                                final ArrivalsAdapter adapter = new ArrivalsAdapter(ctx, listData);
+
+                                arrivalsListView.setAdapter(adapter);
+                                arrivalsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+                                    @Override
+                                    public void onItemClick(AdapterView<?> currentAdapter, View currentView, int position, long arg3) {
+
+                                        Flight currentFlight = (Flight) arrivalsListView.getItemAtPosition(position);
+                                        Intent nextScreen = new Intent(getApplicationContext(), FlightDetailsActivity.class);
+                                        nextScreen.putExtra("flightDetails", currentFlight);
+
+                                        startActivity(nextScreen);
+                                    }
+                                });
+
+                                adapter.notifyDataSetChanged();
+                                swipeContainer.setRefreshing(false);
+
+                            }
+                        }, new Response.ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // Handle error
+
+                    }
+                });
+                rq.add(jReq);
+            }
+
+        });
+        // Configure the refreshing colors
+        swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
+                R.color.airportBlueLight,
+                R.color.airportBlueDark);
+        }
+
+
+    private void updateFlightData(JSONArray response, ArrayList<Flight> listData) {
+
+        for (int i = 0; i < response.length(); i++) {
+            try {
+                JSONObject x = response.getJSONObject(i);
+                Flight flight = new Flight();
+                flight.setArrivesFrom(x.getString("ArrivesFrom"));
+                flight.setExpectedTime(x.getString("ExpectedTime"));
+                flight.setFlightNo(x.getString("FlightNo"));
+                flight.setDepartsFor(x.getString("DepartsFor"));
+                flight.setGroundOperator(x.getString("GroundOperator"));
+                flight.setMoreDetails(x.getString("MoreDetails"));
+                flight.setPlaneType(x.getString("PlaneType"));
+                flight.setScheduledDate(x.getString("ScheduledDate"));
+                flight.setScheduledTime(x.getString("ScheduledTime"));
+                flight.setStatus(x.getString("Status"));
+                flight.setTerminal(x.getString("Terminal"));
+                listData.add(flight);
+
+            } catch (JSONException e) {
+            }
+
+        }
     }
 
 
