@@ -4,7 +4,9 @@ import android.app.Activity;
 import android.content.Context;
 //import android.support.v7.app.ActionBarActivity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -33,12 +35,23 @@ import java.util.List;
 
 public class Departures extends Activity {
 
+    private static boolean headerExists = false;
+    private static String baseUrl = "http://sofiaairport.apphb.com/api/departures/getall?size=";
+    private static String url ="";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_departures);
 
-        final String url ="http://sofiaairport.apphb.com/api/departures/getall?size=1";
+    }
+
+    @Override
+    protected  void  onStart(){
+        super.onStart();
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        String flightCount = sharedPref.getString(SettingsActivity.PREF_FLIGHT_COUNT, "");
+        url = baseUrl+flightCount;
+
         final Context ctx = this;
         final ArrayList<Flight> listData = new ArrayList<Flight>();
 
@@ -52,8 +65,9 @@ public class Departures extends Activity {
                         updateFlightData(response, listData);
 
                         final ListView departuresListView = (ListView) findViewById(R.id.lvDepartures);
-                        addListViewHeader(departuresListView);
-
+                        if (!headerExists) {
+                            addListViewHeader(departuresListView);
+                        }
                         final DeparturesAdapter adapter = new DeparturesAdapter(ctx, listData);
                         departuresListView.setAdapter(adapter);
                         adapter.notifyDataSetChanged();
@@ -119,6 +133,7 @@ public class Departures extends Activity {
         LayoutInflater inflater = getLayoutInflater();
         ViewGroup header = (ViewGroup)inflater.inflate(R.layout.arrivals_list_row_header, departuresListView, false);
         departuresListView.addHeaderView(header, null, false);
+        headerExists = true;
     }
 
     private void updateFlightData(JSONArray response, ArrayList<Flight> listData) {
