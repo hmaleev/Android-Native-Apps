@@ -1,0 +1,21 @@
+<resources>
+    <string name="title_activity_settings">Settings</string>
+
+     <!-- Example settings for Data & Sync -->
+    <string name="pref_header_data_sync">Data &amp; sync</string>
+
+    <string name="pref_title_sync_frequency">Flights to display</string>
+    <string-array name="pref_sync_frequency_titles">
+        <item>10</item>
+        <item>20</item>
+        <item>30</item>
+    </string-array>
+    <string-array name="pref_sync_frequency_values">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+
+    <string name="pref_title_system_sync_settings">System sync settings</string>
+
+</resources>

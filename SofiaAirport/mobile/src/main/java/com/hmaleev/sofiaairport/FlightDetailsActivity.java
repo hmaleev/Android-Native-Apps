@@ -1,6 +1,7 @@
 package com.hmaleev.sofiaairport;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -56,7 +57,8 @@ public class FlightDetailsActivity extends Activity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            return true;
+            Intent nextScreen = new Intent(getApplicationContext(), SettingsActivity.class);
+            startActivity(nextScreen);
         }
 
         return super.onOptionsItemSelected(item);

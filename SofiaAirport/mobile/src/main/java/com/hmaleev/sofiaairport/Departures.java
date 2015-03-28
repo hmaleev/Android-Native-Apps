@@ -161,7 +161,8 @@ public class Departures extends Activity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            return true;
+            Intent nextScreen = new Intent(getApplicationContext(), SettingsActivity.class);
+            startActivity(nextScreen);
         }
 
         return super.onOptionsItemSelected(item);

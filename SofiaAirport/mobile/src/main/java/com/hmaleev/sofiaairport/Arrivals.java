@@ -3,7 +3,10 @@ package com.hmaleev.sofiaairport;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceActivity;
+import android.preference.PreferenceManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -26,20 +29,33 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.prefs.Preferences;
 
 public class Arrivals extends Activity {
 
     private SwipeRefreshLayout swipeContainer;
+
+
+    private static String baseUrl = "http://sofiaairport.apphb.com/api/arrivals/getall?size=";
+    private static String url ="";
+    private static boolean headerExists = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_arrivals);
 
+        }
 
-        final String url = "http://sofiaairport.apphb.com/api/arrivals/getall?size=1";
+    @Override
+    protected void onStart(){
+        super.onStart();
         final Context ctx = this;
-        final ArrayList<Flight> listData = new ArrayList<Flight>();
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        String flightCount = sharedPref.getString(SettingsActivity.PREF_FLIGHT_COUNT, "");
+        url = baseUrl+flightCount;
+
+        final ArrayList<Flight> listData = new ArrayList<>();
         final RequestQueue rq = Volley.newRequestQueue(this);
         final JsonArrayRequest jReq = new JsonArrayRequest(url,
                 new Response.Listener<JSONArray>() {
@@ -49,7 +65,9 @@ public class Arrivals extends Activity {
                         updateFlightData(response, listData);
 
                         final ListView arrivalsListView = (ListView) findViewById(R.id.lvArrivals);
-                        addListViewHeader(arrivalsListView);
+                        if (!headerExists) {
+                            addListViewHeader(arrivalsListView);
+                        }
 
                         final ArrivalsAdapter adapter = new ArrivalsAdapter(ctx, listData);
                         arrivalsListView.setAdapter(adapter);
@@ -73,10 +91,6 @@ public class Arrivals extends Activity {
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                // Your code to refresh the list here.
-                // Make sure you call swipeContainer.setRefreshing(false)
-                // once the network request has completed successfully.
-
 
                 final JsonArrayRequest jReq = new JsonArrayRequest(url,
                         new Response.Listener<JSONArray>() {
@@ -110,12 +124,14 @@ public class Arrivals extends Activity {
         // Configure the refreshing colors
         swipeContainer.setColorSchemeResources(R.color.airportBlueLight,
                 R.color.airportBlueDark);
-        }
+    }
 
     private void addListViewHeader(ListView arrivalsListView) {
         LayoutInflater inflater = getLayoutInflater();
         ViewGroup header = (ViewGroup)inflater.inflate(R.layout.arrivals_list_row_header, arrivalsListView, false);
         arrivalsListView.addHeaderView(header, null, false);
+        headerExists = true;
+
     }
 
     private void navigateToNextViewClickHandler(final ListView arrivalsListView) {
@@ -132,7 +148,6 @@ public class Arrivals extends Activity {
             }
         });
     }
-
 
     private void updateFlightData(JSONArray response, ArrayList<Flight> listData) {
 
@@ -159,7 +174,6 @@ public class Arrivals extends Activity {
         }
     }
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -176,7 +190,9 @@ public class Arrivals extends Activity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            return true;
+            //    return true;
+            Intent nextScreen = new Intent(getApplicationContext(), SettingsActivity.class);
+            startActivity(nextScreen);
         }
 
         return super.onOptionsItemSelected(item);

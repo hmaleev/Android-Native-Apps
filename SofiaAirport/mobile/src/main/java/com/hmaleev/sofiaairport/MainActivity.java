@@ -1,9 +1,12 @@
 package com.hmaleev.sofiaairport;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 //import android.support.v7.app.ActionBarActivity;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,6 +20,7 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
 
         ImageView arrivalsImageView = (ImageView)findViewById(R.id.arrivalsImageView);
         arrivalsImageView.setOnClickListener(new View.OnClickListener() {
@@ -85,7 +89,9 @@ public class MainActivity extends Activity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            return true;
+        //    return true;
+           Intent nextScreen = new Intent(getApplicationContext(), SettingsActivity.class);
+           startActivity(nextScreen);
         }
 
         return super.onOptionsItemSelected(item);
