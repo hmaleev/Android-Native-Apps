@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.hmaleev.sofiaairport.R;
@@ -31,12 +32,10 @@ public class DeparturesAdapter extends ArrayAdapter<Flight> {
         View listRowView = convertView;
         if (listRowView == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            if(position % 2 == 0){
-                listRowView = inflater.inflate(R.layout.arrivals_list_row_even, null);
-            }
-            else {
-                listRowView = inflater.inflate(R.layout.arrivals_list_row_odd, null);
-            }
+            listRowView = inflater.inflate(R.layout.arrivals_list_row_even, parent,false);
+        }
+        else {
+            listRowView = convertView;
         }
 
         Flight flight = values.get(position);
@@ -49,6 +48,15 @@ public class DeparturesAdapter extends ArrayAdapter<Flight> {
         status.setText(flight.getStatus());
         TextView terminal = (TextView) listRowView.findViewById(R.id.tvTerminal);
         terminal.setText(flight.getTerminal());
+
+        RelativeLayout layout_item = (RelativeLayout) listRowView.findViewById(R.id.row);
+
+        if(position % 2 == 0){
+            layout_item.setBackgroundColor(context.getResources().getColor(R.color.airportBlueLight));
+        }
+        else {
+            layout_item.setBackgroundColor(context.getResources().getColor(R.color.airportBlueDark));
+        }
 
         return listRowView;
     }

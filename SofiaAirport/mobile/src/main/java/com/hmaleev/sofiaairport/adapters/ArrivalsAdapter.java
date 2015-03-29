@@ -28,28 +28,11 @@ public class ArrivalsAdapter extends ArrayAdapter<Flight> {
         View v = convertView;
         if (v == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-          /*  if (position == 0) {
-                v = inflater.inflate(R.layout.arrivals_list_row_header, null);
-
-                TextView expectedTimeLabe = (TextView) v.findViewById(R.id.tvTime);
-                expectedTimeLabe.setText(R.string.expectedTimeHeaderLabel);
-                TextView fromHeader = (TextView) v.findViewById(R.id.tvFrom);
-                fromHeader.setText(R.string.arrivesFromHeaderLabel);
-                TextView statusHeader = (TextView) v.findViewById(R.id.tvStatus);
-                statusHeader.setText(R.string.statusHeaderLabel);
-                TextView terminal = (TextView) v.findViewById(R.id.tvTerminal);
-                terminal.setText(R.string.terminaHeaderlLabel);
-
-                return v;
-            }*/
-            if(position % 2 == 0){
-                v = inflater.inflate(R.layout.arrivals_list_row_even, null);
-            }
-            else {
-                v = inflater.inflate(R.layout.arrivals_list_row_odd, null);
-            }
+            v = inflater.inflate(R.layout.arrivals_list_row_even, parent,false);
         }
-
+        else {
+            v = convertView;
+        }
         Flight flight = values.get(position);
         TextView expectedTime = (TextView) v.findViewById(R.id.tvTime);
         expectedTime.setText(flight.getExpectedTime());
@@ -60,6 +43,14 @@ public class ArrivalsAdapter extends ArrayAdapter<Flight> {
         TextView terminal = (TextView) v.findViewById(R.id.tvTerminal);
         terminal.setText(flight.getTerminal());
 
+        RelativeLayout layout_item = (RelativeLayout) v.findViewById(R.id.row);
+
+        if(position % 2 == 0){
+            layout_item.setBackgroundColor(context.getResources().getColor(R.color.airportBlueLight));
+            }
+            else {
+            layout_item.setBackgroundColor(context.getResources().getColor(R.color.airportBlueDark));
+            }
         return v;
     }
 }
