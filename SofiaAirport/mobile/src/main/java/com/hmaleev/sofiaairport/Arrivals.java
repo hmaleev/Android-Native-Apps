@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -15,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -39,6 +41,9 @@ public class Arrivals extends Activity {
     private static String baseUrl = "http://sofiaairport.apphb.com/api/arrivals/getall?size=";
     private static String url ="";
     private static boolean headerExists = false;
+    private Handler mHandler;
+    private static Context activityContext = null;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,13 +52,59 @@ public class Arrivals extends Activity {
 
         }
 
+    private final Runnable m_Runnable = new Runnable()
+    {
+
+        public void run()
+
+        {
+           // Toast.makeText(Arrivals.this, "in runnable", Toast.LENGTH_SHORT).show();
+            final ArrayList<Flight> listData = new ArrayList<>();
+            final RequestQueue rq = Volley.newRequestQueue(activityContext);
+            final JsonArrayRequest request = new JsonArrayRequest(url,
+                    new Response.Listener<JSONArray>() {
+
+                        @Override
+                        public void onResponse(JSONArray response) {
+                            listData.clear();
+                            updateFlightData(response, listData);
+                            final ListView arrivalsListView = (ListView) findViewById(R.id.lvArrivals);
+                            final ArrivalsAdapter adapter = new ArrivalsAdapter(activityContext, listData);
+
+                            arrivalsListView.setAdapter(adapter);
+                            navigateToNextViewClickHandler(arrivalsListView);
+
+                            adapter.notifyDataSetChanged();
+                           // swipeContainer.setRefreshing(false);
+                            Toast.makeText(Arrivals.this, "updated", Toast.LENGTH_SHORT).show();
+                        }
+                    }, new Response.ErrorListener() {
+
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    // Handle error
+
+                }
+            });
+            rq.add(request);
+
+            Arrivals.this.mHandler.postDelayed(m_Runnable,60000);
+        }
+
+    };
+
     @Override
     protected void onStart(){
         super.onStart();
+
         final Context ctx = this;
+        activityContext = ctx;
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
-        String flightCount = sharedPref.getString(SettingsActivity.PREF_FLIGHT_COUNT, "");
+        String flightCount = sharedPref.getString(SettingsActivity.PREF_FLIGHT_COUNT, "2");
         url = baseUrl+flightCount;
+
+        this.mHandler = new Handler();
+        m_Runnable.run();
 
         final ArrayList<Flight> listData = new ArrayList<>();
         final RequestQueue rq = Volley.newRequestQueue(this);
@@ -84,6 +135,8 @@ public class Arrivals extends Activity {
             }
         });
 
+
+
         rq.add(jReq);
 
         swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
@@ -92,7 +145,7 @@ public class Arrivals extends Activity {
             @Override
             public void onRefresh() {
 
-                final JsonArrayRequest jReq = new JsonArrayRequest(url,
+                final JsonArrayRequest request = new JsonArrayRequest(url,
                         new Response.Listener<JSONArray>() {
 
                             @Override
@@ -117,7 +170,7 @@ public class Arrivals extends Activity {
 
                     }
                 });
-                rq.add(jReq);
+                rq.add(request);
             }
 
         });

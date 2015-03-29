@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
@@ -15,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -38,12 +40,55 @@ public class Departures extends Activity {
     private static boolean headerExists = false;
     private static String baseUrl = "http://sofiaairport.apphb.com/api/departures/getall?size=";
     private static String url ="";
+    private static Context activityContext = null;
+    private Handler mHandler;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_departures);
 
     }
+
+    private final Runnable m_Runnable = new Runnable()
+    {
+
+        public void run()
+
+        {
+            // Toast.makeText(Arrivals.this, "in runnable", Toast.LENGTH_SHORT).show();
+            final ArrayList<Flight> listData = new ArrayList<>();
+            final RequestQueue rq = Volley.newRequestQueue(activityContext);
+            final JsonArrayRequest request = new JsonArrayRequest(url,
+                    new Response.Listener<JSONArray>() {
+
+                        @Override
+                        public void onResponse(JSONArray response) {
+                            listData.clear();
+                            updateFlightData(response, listData);
+                            final ListView departuresListView = (ListView) findViewById(R.id.lvDepartures);
+                            final DeparturesAdapter adapter = new DeparturesAdapter(activityContext, listData);
+
+                            departuresListView.setAdapter(adapter);
+                            navigateToNextViewClickHandler(departuresListView);
+
+                            adapter.notifyDataSetChanged();
+                            // swipeContainer.setRefreshing(false);
+                            Toast.makeText(Departures.this, "updated dep", Toast.LENGTH_SHORT).show();
+                        }
+                    }, new Response.ErrorListener() {
+
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    // Handle error
+
+                }
+            });
+            rq.add(request);
+
+            Departures.this.mHandler.postDelayed(m_Runnable,60000);
+        }
+
+    };
 
     @Override
     protected  void  onStart(){
@@ -53,6 +98,11 @@ public class Departures extends Activity {
         url = baseUrl+flightCount;
 
         final Context ctx = this;
+        activityContext = ctx;
+
+        this.mHandler = new Handler();
+        m_Runnable.run();
+
         final ArrayList<Flight> listData = new ArrayList<Flight>();
 
         final RequestQueue rq = Volley.newRequestQueue(this);
