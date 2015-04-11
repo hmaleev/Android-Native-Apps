@@ -46,6 +46,7 @@ public class Departures extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_departures);
+        headerExists = false;
 
     }
 
@@ -55,34 +56,11 @@ public class Departures extends Activity {
         public void run()
 
         {
-            // Toast.makeText(Arrivals.this, "in runnable", Toast.LENGTH_SHORT).show();
+             Toast.makeText(Departures.this, "in runnable", Toast.LENGTH_SHORT).show();
             final ArrayList<Flight> listData = new ArrayList<>();
             final RequestQueue rq = Volley.newRequestQueue(activityContext);
-            final JsonArrayRequest request = new JsonArrayRequest(url,
-                    new Response.Listener<JSONArray>() {
 
-                        @Override
-                        public void onResponse(JSONArray response) {
-                            listData.clear();
-                            updateFlightData(response, listData);
-                            final ListView departuresListView = (ListView) findViewById(R.id.lvDepartures);
-                            final DeparturesAdapter adapter = new DeparturesAdapter(activityContext, listData);
-
-                            departuresListView.setAdapter(adapter);
-                            navigateToNextViewClickHandler(departuresListView);
-
-                            adapter.notifyDataSetChanged();
-                            // swipeContainer.setRefreshing(false);
-                            Toast.makeText(Departures.this, "updated dep", Toast.LENGTH_SHORT).show();
-                        }
-                    }, new Response.ErrorListener() {
-
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    // Handle error
-
-                }
-            });
+            final JsonArrayRequest request = getJsonArrayRequest(activityContext,listData);
             rq.add(request);
 
             Departures.this.mHandler.postDelayed(m_Runnable,60000);
@@ -94,7 +72,7 @@ public class Departures extends Activity {
     protected  void  onStart(){
         super.onStart();
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
-        String flightCount = sharedPref.getString(SettingsActivity.PREF_FLIGHT_COUNT, "");
+        String flightCount = sharedPref.getString(SettingsActivity.PREF_FLIGHT_COUNT, "2");
         url = baseUrl+flightCount;
 
         final Context ctx = this;
@@ -106,31 +84,7 @@ public class Departures extends Activity {
         final ArrayList<Flight> listData = new ArrayList<Flight>();
 
         final RequestQueue rq = Volley.newRequestQueue(this);
-        JsonArrayRequest jReq = new JsonArrayRequest(url,
-                new Response.Listener<JSONArray>() {
-
-                    @Override
-                    public void onResponse(JSONArray response) {
-
-                        updateFlightData(response, listData);
-
-                        final ListView departuresListView = (ListView) findViewById(R.id.lvDepartures);
-                        if (!headerExists) {
-                            addListViewHeader(departuresListView);
-                        }
-                        final DeparturesAdapter adapter = new DeparturesAdapter(ctx, listData);
-                        departuresListView.setAdapter(adapter);
-                        adapter.notifyDataSetChanged();
-
-                    }
-                }, new Response.ErrorListener() {
-
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                // Handle error
-
-            }
-        });
+        JsonArrayRequest jReq = getJsonArrayRequest(ctx, listData);
 
         rq.add(jReq);
 
@@ -152,6 +106,9 @@ public class Departures extends Activity {
                                 listData.clear();
                                 updateFlightData(response, listData);
                                 final ListView departuresListView = (ListView) findViewById(R.id.lvDepartures);
+                                if (!headerExists) {
+                                    addListViewHeader(departuresListView);
+                                }
                                 final DeparturesAdapter adapter = new DeparturesAdapter(ctx, listData);
 
                                 departuresListView.setAdapter(adapter);
@@ -176,6 +133,35 @@ public class Departures extends Activity {
         // Configure the refreshing colors
         swipeContainer.setColorSchemeResources(R.color.airportBlueLight,
                 R.color.airportBlueDark);
+    }
+
+    private JsonArrayRequest getJsonArrayRequest(final Context ctx, final ArrayList<Flight> listData) {
+        return new JsonArrayRequest(url,
+                    new Response.Listener<JSONArray>() {
+
+                        @Override
+                        public void onResponse(JSONArray response) {
+
+                            listData.clear();
+                            updateFlightData(response, listData);
+
+                            final ListView departuresListView = (ListView) findViewById(R.id.lvDepartures);
+                            if (!headerExists) {
+                                addListViewHeader(departuresListView);
+                            }
+                            final DeparturesAdapter adapter = new DeparturesAdapter(ctx, listData);
+                            departuresListView.setAdapter(adapter);
+                            adapter.notifyDataSetChanged();
+
+                        }
+                    }, new Response.ErrorListener() {
+
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    // Handle error
+
+                }
+            });
     }
 
 
