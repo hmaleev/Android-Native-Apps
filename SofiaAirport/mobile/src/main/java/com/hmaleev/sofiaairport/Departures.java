@@ -2,13 +2,14 @@ package com.hmaleev.sofiaairport;
 
 import android.app.Activity;
 import android.content.Context;
-//import android.support.v7.app.ActionBarActivity;
+
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -16,7 +17,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -35,10 +35,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class Departures extends Activity {
+public final class Departures extends Activity {
 
     private static boolean headerExists = false;
-    private static String baseUrl = "http://sofiaairport.apphb.com/api/departures/getall?size=";
     private static String url ="";
     private static Context activityContext = null;
     private Handler mHandler;
@@ -48,40 +47,24 @@ public class Departures extends Activity {
         setContentView(R.layout.activity_departures);
         headerExists = false;
 
+        updateUI();
     }
 
-    private final Runnable m_Runnable = new Runnable()
-    {
-
-        public void run()
-
-        {
-             Toast.makeText(Departures.this, "in runnable", Toast.LENGTH_SHORT).show();
-            final ArrayList<Flight> listData = new ArrayList<>();
-            final RequestQueue rq = Volley.newRequestQueue(activityContext);
-
-            final JsonArrayRequest request = getJsonArrayRequest(activityContext,listData);
-            rq.add(request);
-
-            Departures.this.mHandler.postDelayed(m_Runnable,60000);
-        }
-
-    };
-
-    @Override
-    protected  void  onStart(){
-        super.onStart();
+    private void updateUI() {
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         String flightCount = sharedPref.getString(SettingsActivity.PREF_FLIGHT_COUNT, "2");
-        url = baseUrl+flightCount;
+        String baseUrl = "http://sofiaairport.apphb.com/api/departures/getall?size=";
+        url = baseUrl +flightCount;
 
         final Context ctx = this;
         activityContext = ctx;
 
-        this.mHandler = new Handler();
-        m_Runnable.run();
+        if (this.mHandler == null) {
+            this.mHandler = new Handler();
+            m_Runnable.run();
+        }
 
-        final ArrayList<Flight> listData = new ArrayList<Flight>();
+        final ArrayList<Flight> listData = new ArrayList<>();
 
         final RequestQueue rq = Volley.newRequestQueue(this);
         JsonArrayRequest jReq = getJsonArrayRequest(ctx, listData);
@@ -134,6 +117,30 @@ public class Departures extends Activity {
         swipeContainer.setColorSchemeResources(R.color.airportBlueLight,
                 R.color.airportBlueDark);
     }
+
+    @Override
+    public void onRestart(){
+        super.onRestart();
+        updateUI();
+    }
+
+    private final Runnable m_Runnable = new Runnable()
+    {
+
+        public void run()
+
+        {
+           //  Toast.makeText(Departures.this, "in runnable", Toast.LENGTH_SHORT).show();
+            final ArrayList<Flight> listData = new ArrayList<>();
+            final RequestQueue rq = Volley.newRequestQueue(activityContext);
+
+            final JsonArrayRequest request = getJsonArrayRequest(activityContext,listData);
+            rq.add(request);
+
+            Departures.this.mHandler.postDelayed(m_Runnable,60000);
+        }
+
+    };
 
     private JsonArrayRequest getJsonArrayRequest(final Context ctx, final ArrayList<Flight> listData) {
         return new JsonArrayRequest(url,
@@ -191,6 +198,7 @@ public class Departures extends Activity {
                 listData.add(flight);
 
             } catch (JSONException e) {
+                Log.e("ERROR", e.getMessage());
             }
         }
     }

@@ -6,9 +6,9 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
-import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -31,14 +31,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.prefs.Preferences;
 
-public class Arrivals extends Activity {
+public final class Arrivals extends Activity {
 
     private SwipeRefreshLayout swipeContainer;
 
 
-    private static String baseUrl = "http://sofiaairport.apphb.com/api/arrivals/getall?size=";
     private static String url ="";
     private static boolean headerExists = false;
     private Handler mHandler;
@@ -49,8 +47,97 @@ public class Arrivals extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_arrivals);
+        headerExists = false;
+
+        updateUI();
 
         }
+
+    private void updateUI() {
+        final Context ctx = this;
+        activityContext = ctx;
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        String flightCount = sharedPref.getString(SettingsActivity.PREF_FLIGHT_COUNT, "2");
+        String baseUrl = "http://sofiaairport.apphb.com/api/arrivals/getall?size=";
+        url = baseUrl  +flightCount;
+
+        if (this.mHandler == null) {
+            this.mHandler = new Handler();
+            m_Runnable.run();
+        }
+
+
+        final ArrayList<Flight> listData = new ArrayList<>();
+        final RequestQueue rq = Volley.newRequestQueue(this);
+        final JsonArrayRequest jReq = new JsonArrayRequest(url,
+                new Response.Listener<JSONArray>() {
+
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        updateFlightData(response, listData);
+
+                        final ListView arrivalsListView = (ListView) findViewById(R.id.lvArrivals);
+                        if (!headerExists) {
+                            addListViewHeader(arrivalsListView);
+                        }
+
+                        final ArrivalsAdapter adapter = new ArrivalsAdapter(ctx, listData);
+                        arrivalsListView.setAdapter(adapter);
+
+                        navigateToNextViewClickHandler(arrivalsListView);
+                        adapter.notifyDataSetChanged();
+
+                    }
+                }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                // Handle error
+            }
+        });
+
+
+        rq.add(jReq);
+
+        swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
+        // Setup refresh listener which triggers new data loading
+        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+
+                final JsonArrayRequest request = new JsonArrayRequest(url,
+                        new Response.Listener<JSONArray>() {
+
+                            @Override
+                            public void onResponse(JSONArray response) {
+                                listData.clear();
+                                updateFlightData(response, listData);
+                                final ListView arrivalsListView = (ListView) findViewById(R.id.lvArrivals);
+                                final ArrivalsAdapter adapter = new ArrivalsAdapter(ctx, listData);
+
+                                arrivalsListView.setAdapter(adapter);
+                                navigateToNextViewClickHandler(arrivalsListView);
+
+                                adapter.notifyDataSetChanged();
+                                swipeContainer.setRefreshing(false);
+
+                            }
+                        }, new Response.ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // Handle error
+
+                    }
+                });
+                rq.add(request);
+            }
+
+        });
+        // Configure the refreshing colors
+        swipeContainer.setColorSchemeResources(R.color.airportBlueLight,
+                R.color.airportBlueDark);
+    }
 
     private final Runnable m_Runnable = new Runnable()
     {
@@ -94,89 +181,10 @@ public class Arrivals extends Activity {
     };
 
     @Override
-    protected void onStart(){
-        super.onStart();
+    protected void onRestart(){
+        super.onRestart();
+        updateUI();
 
-        final Context ctx = this;
-        activityContext = ctx;
-        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
-        String flightCount = sharedPref.getString(SettingsActivity.PREF_FLIGHT_COUNT, "2");
-        url = baseUrl+flightCount;
-
-        this.mHandler = new Handler();
-        m_Runnable.run();
-
-        final ArrayList<Flight> listData = new ArrayList<>();
-        final RequestQueue rq = Volley.newRequestQueue(this);
-        final JsonArrayRequest jReq = new JsonArrayRequest(url,
-                new Response.Listener<JSONArray>() {
-
-                    @Override
-                    public void onResponse(JSONArray response) {
-                        updateFlightData(response, listData);
-
-                        final ListView arrivalsListView = (ListView) findViewById(R.id.lvArrivals);
-                        if (!headerExists) {
-                            addListViewHeader(arrivalsListView);
-                        }
-
-                        final ArrivalsAdapter adapter = new ArrivalsAdapter(ctx, listData);
-                        arrivalsListView.setAdapter(adapter);
-
-                        navigateToNextViewClickHandler(arrivalsListView);
-                        adapter.notifyDataSetChanged();
-
-                    }
-                }, new Response.ErrorListener() {
-
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                // Handle error
-            }
-        });
-
-
-
-        rq.add(jReq);
-
-        swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
-        // Setup refresh listener which triggers new data loading
-        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-
-                final JsonArrayRequest request = new JsonArrayRequest(url,
-                        new Response.Listener<JSONArray>() {
-
-                            @Override
-                            public void onResponse(JSONArray response) {
-                                listData.clear();
-                                updateFlightData(response, listData);
-                                final ListView arrivalsListView = (ListView) findViewById(R.id.lvArrivals);
-                                final ArrivalsAdapter adapter = new ArrivalsAdapter(ctx, listData);
-
-                                arrivalsListView.setAdapter(adapter);
-                                navigateToNextViewClickHandler(arrivalsListView);
-
-                                adapter.notifyDataSetChanged();
-                                swipeContainer.setRefreshing(false);
-
-                            }
-                        }, new Response.ErrorListener() {
-
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        // Handle error
-
-                    }
-                });
-                rq.add(request);
-            }
-
-        });
-        // Configure the refreshing colors
-        swipeContainer.setColorSchemeResources(R.color.airportBlueLight,
-                R.color.airportBlueDark);
     }
 
     private void addListViewHeader(ListView arrivalsListView) {
@@ -222,6 +230,7 @@ public class Arrivals extends Activity {
                 listData.add(flight);
 
             } catch (JSONException e) {
+                Log.e("ERROR", e.getMessage());
             }
 
         }

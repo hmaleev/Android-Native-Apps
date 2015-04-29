@@ -1,12 +1,8 @@
 package com.hmaleev.sofiaairport;
 
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
-import android.media.Ringtone;
-import android.media.RingtoneManager;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.ListPreference;
@@ -64,7 +60,7 @@ public class SettingsActivity extends PreferenceActivity /*implements SharedPref
 
 
 
-    private static final boolean ALWAYS_SIMPLE_PREFS = false;
+   // private static final boolean ALWAYS_SIMPLE_PREFS = false;
     public static  final  String PREF_FLIGHT_COUNT = "flight_count";
   //  public static final String PREF_FLIGHT_COUNT = "com.hmaleev.sofiaairport.FLIGHT_COUNT";
 
@@ -73,10 +69,10 @@ public class SettingsActivity extends PreferenceActivity /*implements SharedPref
         super.onPostCreate(savedInstanceState);
 
         Context ctx = getApplicationContext();
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(ctx);
+       /* SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(ctx);
 
         String flightCount = preferences.getString(SettingsActivity.PREF_FLIGHT_COUNT,"2");
-
+*/
         setupSimplePreferencesScreen();
 
 
@@ -99,9 +95,6 @@ public class SettingsActivity extends PreferenceActivity /*implements SharedPref
 
         // Add 'general' preferences.
         addPreferencesFromResource(R.xml.pref_data_sync);
-
-
-
     }
 
     /**
@@ -129,8 +122,7 @@ public class SettingsActivity extends PreferenceActivity /*implements SharedPref
      * "simplified" settings UI should be shown.
      */
     private static boolean isSimplePreferences(Context context) {
-        return ALWAYS_SIMPLE_PREFS
-                || Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB
+        return Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB
                 || !isXLargeTablet(context);
     }
 }

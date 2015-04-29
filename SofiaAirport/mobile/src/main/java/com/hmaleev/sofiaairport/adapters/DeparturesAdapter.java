@@ -13,9 +13,6 @@ import com.hmaleev.sofiaairport.models.Flight;
 
 import java.util.ArrayList;
 
-/**
- * Created by www on 14.3.2015 г..
- */
 public class DeparturesAdapter extends ArrayAdapter<Flight> {
     private final Context context;
     private final ArrayList<Flight> values;
