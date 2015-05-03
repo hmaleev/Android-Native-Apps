@@ -10,5 +10,17 @@
             android:entries="@array/pref_sync_frequency_titles"
             android:entryValues="@array/pref_sync_frequency_values"
             android:defaultValue="2"/>
+
+        <CheckBoxPreference
+            android:key="auto_sync_enable"
+            android:title="@string/pref_title_enable_auto_sync"/>
+
+        <ListPreference
+            android:key="auto_sync_interval"
+            android:title="@string/pref_title_auto_sync_frequency"
+            android:entries="@array/pref_auto_sync_frequency_titles"
+            android:entryValues="@array/pref_auto_sync_frequency_values"
+            android:defaultValue="60000"
+            android:dependency="auto_sync_enable"/>
     </PreferenceCategory>
 </PreferenceScreen>

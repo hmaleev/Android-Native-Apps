@@ -24,6 +24,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
 import com.hmaleev.sofiaairport.adapters.ArrivalsAdapter;
+import com.hmaleev.sofiaairport.adapters.DeparturesAdapter;
 import com.hmaleev.sofiaairport.models.Flight;
 
 import org.json.JSONArray;
@@ -61,9 +62,20 @@ public final class Arrivals extends Activity {
         String baseUrl = "http://sofiaairport.apphb.com/api/arrivals/getall?size=";
         url = baseUrl  +flightCount;
 
-        if (this.mHandler == null) {
-            this.mHandler = new Handler();
-            m_Runnable.run();
+        boolean isAutoSyncEnabled = sharedPref.getBoolean(SettingsActivity.PREF_AUTO_SYNC,false);
+        if (isAutoSyncEnabled) {
+            if (this.mHandler == null) {
+                this.mHandler = new Handler();
+                m_Runnable.run();
+            }
+        }
+        else {
+
+            if (this.mHandler != null) {
+
+                mHandler.removeCallbacksAndMessages(m_Runnable);
+            }
+
         }
 
 
@@ -145,38 +157,19 @@ public final class Arrivals extends Activity {
         public void run()
 
         {
-           // Toast.makeText(Arrivals.this, "in runnable", Toast.LENGTH_SHORT).show();
+            Toast.makeText(Arrivals.this, "in runnable", Toast.LENGTH_SHORT).show();
+            SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(activityContext);
+            String autoSyncInterval = sharedPref.getString(SettingsActivity.PREF_AUTO_SYNC_INTERVAL, "60000");
+            int interval = Integer.parseInt(autoSyncInterval);
             final ArrayList<Flight> listData = new ArrayList<>();
             final RequestQueue rq = Volley.newRequestQueue(activityContext);
-            final JsonArrayRequest request = new JsonArrayRequest(url,
-                    new Response.Listener<JSONArray>() {
-
-                        @Override
-                        public void onResponse(JSONArray response) {
-                            listData.clear();
-                            updateFlightData(response, listData);
-                            final ListView arrivalsListView = (ListView) findViewById(R.id.lvArrivals);
-                            final ArrivalsAdapter adapter = new ArrivalsAdapter(activityContext, listData);
-
-                            arrivalsListView.setAdapter(adapter);
-                            navigateToNextViewClickHandler(arrivalsListView);
-
-                            adapter.notifyDataSetChanged();
-                           // swipeContainer.setRefreshing(false);
-                            Toast.makeText(Arrivals.this, "updated", Toast.LENGTH_SHORT).show();
-                        }
-                    }, new Response.ErrorListener() {
-
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    // Handle error
-
-                }
-            });
+            final JsonArrayRequest request = getJsonArrayRequest(activityContext,listData);
             rq.add(request);
 
-            Arrivals.this.mHandler.postDelayed(m_Runnable,60000);
+            Arrivals.this.mHandler.postDelayed(m_Runnable,interval);
+
         }
+
 
     };
 
@@ -258,5 +251,34 @@ public final class Arrivals extends Activity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private JsonArrayRequest getJsonArrayRequest(final Context ctx, final ArrayList<Flight> listData) {
+        return new JsonArrayRequest(url,
+                new Response.Listener<JSONArray>() {
+
+                    @Override
+                    public void onResponse(JSONArray response) {
+
+                        listData.clear();
+                        updateFlightData(response, listData);
+
+                        final ListView arrivlasListView = (ListView) findViewById(R.id.lvArrivals);
+                        if (!headerExists) {
+                            addListViewHeader(arrivlasListView);
+                        }
+                        final ArrivalsAdapter adapter = new ArrivalsAdapter(ctx, listData);
+                        arrivlasListView.setAdapter(adapter);
+                        adapter.notifyDataSetChanged();
+
+                    }
+                }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                // Handle error
+
+            }
+        });
     }
 }

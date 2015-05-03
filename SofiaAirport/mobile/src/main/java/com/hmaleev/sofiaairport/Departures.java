@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -56,12 +57,24 @@ public final class Departures extends Activity {
         String baseUrl = "http://sofiaairport.apphb.com/api/departures/getall?size=";
         url = baseUrl +flightCount;
 
+        boolean isAutoSyncEnabled = sharedPref.getBoolean(SettingsActivity.PREF_AUTO_SYNC,false);
+
+
         final Context ctx = this;
         activityContext = ctx;
 
-        if (this.mHandler == null) {
-            this.mHandler = new Handler();
-            m_Runnable.run();
+        if (isAutoSyncEnabled) {
+            if (this.mHandler == null) {
+                this.mHandler = new Handler();
+                m_Runnable.run();
+
+            }
+        }
+        else {
+            if (this.mHandler != null) {
+                mHandler.removeCallbacksAndMessages(m_Runnable);
+            }
+
         }
 
         final ArrayList<Flight> listData = new ArrayList<>();
@@ -130,14 +143,17 @@ public final class Departures extends Activity {
         public void run()
 
         {
-           //  Toast.makeText(Departures.this, "in runnable", Toast.LENGTH_SHORT).show();
+             Toast.makeText(Departures.this, "updated", Toast.LENGTH_SHORT).show();
+            SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(activityContext);
+            String autoSyncInterval = sharedPref.getString(SettingsActivity.PREF_AUTO_SYNC_INTERVAL, "60000");
+            int interval = Integer.parseInt(autoSyncInterval);
             final ArrayList<Flight> listData = new ArrayList<>();
             final RequestQueue rq = Volley.newRequestQueue(activityContext);
 
             final JsonArrayRequest request = getJsonArrayRequest(activityContext,listData);
             rq.add(request);
 
-            Departures.this.mHandler.postDelayed(m_Runnable,60000);
+            Departures.this.mHandler.postDelayed(m_Runnable,interval);
         }
 
     };

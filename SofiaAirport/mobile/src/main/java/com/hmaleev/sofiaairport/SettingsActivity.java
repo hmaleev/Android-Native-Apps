@@ -62,6 +62,8 @@ public class SettingsActivity extends PreferenceActivity /*implements SharedPref
 
    // private static final boolean ALWAYS_SIMPLE_PREFS = false;
     public static  final  String PREF_FLIGHT_COUNT = "flight_count";
+    public static  final  String PREF_AUTO_SYNC = "auto_sync_enable";
+    public static  final  String PREF_AUTO_SYNC_INTERVAL = "auto_sync_interval";
   //  public static final String PREF_FLIGHT_COUNT = "com.hmaleev.sofiaairport.FLIGHT_COUNT";
 
     @Override

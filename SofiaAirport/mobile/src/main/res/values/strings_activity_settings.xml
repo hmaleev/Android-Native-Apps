@@ -16,6 +16,18 @@
         <item>3</item>
     </string-array>
 
+    <string name="pref_title_auto_sync_frequency">Auto sync interval (in seconds)</string>
+    <string-array name="pref_auto_sync_frequency_titles">
+        <item>60</item>
+        <item>120</item>
+        <item>180</item>
+    </string-array>
+    <string-array name="pref_auto_sync_frequency_values">
+        <item>60000</item>
+        <item>120000</item>
+        <item>180000</item>
+    </string-array>
+    <string name="pref_title_enable_auto_sync">Enable automatic updates</string>
     <string name="pref_title_system_sync_settings">System sync settings</string>
 
 </resources>
