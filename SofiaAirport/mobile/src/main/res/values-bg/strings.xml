@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Sofia Airport</string>
+    <string name="action_settings">Настройки</string>
+    <string name="arrivalsLabel">Пристигащи</string>
+    <string name="departuresLabel">Заминаващи</string>
+    <string name="planeTakeOffImageContentDescription">Излитащ самолет</string>
+    <string name="PlaneLandingImageContentDescription">приземяващ се самолет</string>
+    <string name="title_activity_arrivals">Пристигащи</string>
+    <string name="title_activity_departures">Заминаващи</string>
+    <string name="title_activity_flight_details">Информация за полета</string>
+    <string name="scheduledTimeLabel">Време</string>
+    <string name="flightNoLabel">Номер на полет</string>
+    <string name="arrivesFromLabel">От</string>
+    <string name="departsForLabel">До</string>
+    <string name="expectedTimeLabel">Очакван</string>
+    <string name="statusLabel">Статут</string>
+    <string name="terminalLabel">Терминал</string>
+    <string name="groundOperatorLabel">Наземен оператор</string>
+    <string name="scheduledTimeDetailedViewLabel">Разписание</string>
+    <string name="expectedTimeDetailedViewLabel">Очакван</string>
+    <string name="expectedTimeHeaderLabel">Час</string>
+    <string name="arrivesFromHeaderLabel">От</string>
+    <string name="flightNoHeaderLabel">Полет номер</string>
+    <string name="statusHeaderLabel">Статут</string>
+    <string name="terminaHeaderlLabel">Терминал</string>
+</resources>

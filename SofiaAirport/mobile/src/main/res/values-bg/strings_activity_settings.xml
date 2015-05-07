@@ -1,0 +1,33 @@
+<resources>
+    <string name="title_activity_settings">Настройки</string>
+
+     <!-- Example settings for Data & Sync -->
+    <string name="pref_header_data_sync">Data &amp; sync</string>
+
+    <string name="pref_title_sync_frequency">Брой показвани полети</string>
+    <string-array name="pref_sync_frequency_titles">
+        <item>10</item>
+        <item>20</item>
+        <item>30</item>
+    </string-array>
+    <string-array name="pref_sync_frequency_values">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+
+    <string name="pref_title_auto_sync_frequency">Интервал на автоматичната синхронизация (в секунди)</string>
+    <string-array name="pref_auto_sync_frequency_titles">
+        <item>60</item>
+        <item>120</item>
+        <item>180</item>
+    </string-array>
+    <string-array name="pref_auto_sync_frequency_values">
+        <item>60000</item>
+        <item>120000</item>
+        <item>180000</item>
+    </string-array>
+    <string name="pref_title_enable_auto_sync">Активиране на автоматична синхронизация</string>
+    <string name="pref_title_system_sync_settings">System sync settings</string>
+
+</resources>
