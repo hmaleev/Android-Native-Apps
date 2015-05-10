@@ -1,6 +1,7 @@
 package com.hmaleev.sofiaairport;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 
 import android.content.Intent;
@@ -42,10 +43,12 @@ public final class Departures extends Activity {
     private static String url ="";
     private static Context activityContext = null;
     private Handler mHandler;
+    ProgressDialog progress;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_departures);
+        super.onCreate(savedInstanceState);
+        progress =  progress.show(this,"Loading","Please wait");
         headerExists = false;
 
         updateUI();
@@ -80,7 +83,33 @@ public final class Departures extends Activity {
         final ArrayList<Flight> listData = new ArrayList<>();
 
         final RequestQueue rq = Volley.newRequestQueue(this);
-        JsonArrayRequest jReq = getJsonArrayRequest(ctx, listData);
+        final JsonArrayRequest jReq = new JsonArrayRequest(url,
+                new Response.Listener<JSONArray>() {
+
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        updateFlightData(response, listData);
+
+                        final ListView departuresListView = (ListView) findViewById(R.id.lvDepartures);
+                        if (!headerExists) {
+                            addListViewHeader(departuresListView);
+                        }
+
+                        final DeparturesAdapter adapter = new DeparturesAdapter(ctx, listData);
+                        departuresListView.setAdapter(adapter);
+
+                        navigateToNextViewClickHandler(departuresListView);
+                        adapter.notifyDataSetChanged();
+                        progress.dismiss();
+
+                    }
+                }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                // Handle error
+            }
+        });
 
         rq.add(jReq);
 

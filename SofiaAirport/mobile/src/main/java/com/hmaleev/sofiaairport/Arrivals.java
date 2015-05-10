@@ -1,6 +1,7 @@
 package com.hmaleev.sofiaairport;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -42,17 +43,16 @@ public final class Arrivals extends Activity {
     private static boolean headerExists = false;
     private Handler mHandler;
     private static Context activityContext = null;
-
+    ProgressDialog progress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_arrivals);
+        super.onCreate(savedInstanceState);
+        progress =  progress.show(this,"Loading","Please wait");
         headerExists = false;
-
         updateUI();
-
-        }
+    }
 
     private void updateUI() {
         final Context ctx = this;
@@ -98,6 +98,7 @@ public final class Arrivals extends Activity {
 
                         navigateToNextViewClickHandler(arrivalsListView);
                         adapter.notifyDataSetChanged();
+                        progress.dismiss();
 
                     }
                 }, new Response.ErrorListener() {
