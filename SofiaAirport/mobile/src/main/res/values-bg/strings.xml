@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Sofia Airport</string>
+    <string name="app_name">Летище София</string>
     <string name="action_settings">Настройки</string>
     <string name="arrivalsLabel">Пристигащи</string>
     <string name="departuresLabel">Заминаващи</string>
@@ -17,7 +17,7 @@
     <string name="statusLabel">Статут</string>
     <string name="terminalLabel">Терминал</string>
     <string name="groundOperatorLabel">Наземен оператор</string>
-    <string name="scheduledTimeDetailedViewLabel">Разписание</string>
+    <string name="scheduledTimeDetailedViewLabel">По разписание</string>
     <string name="expectedTimeDetailedViewLabel">Очакван</string>
     <string name="expectedTimeHeaderLabel">Час</string>
     <string name="arrivesFromHeaderLabel">От</string>
