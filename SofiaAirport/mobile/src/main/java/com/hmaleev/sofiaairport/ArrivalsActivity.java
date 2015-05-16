@@ -25,7 +25,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
 import com.hmaleev.sofiaairport.adapters.ArrivalsAdapter;
-import com.hmaleev.sofiaairport.adapters.DeparturesAdapter;
 import com.hmaleev.sofiaairport.models.Flight;
 
 import org.json.JSONArray;
@@ -34,7 +33,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public final class Arrivals extends Activity {
+public final class ArrivalsActivity extends Activity {
 
     private SwipeRefreshLayout swipeContainer;
 
@@ -49,7 +48,7 @@ public final class Arrivals extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_arrivals);
         super.onCreate(savedInstanceState);
-        progress =  progress.show(this,"Loading","Please wait");
+        progress =  progress.show(this,getString(R.string.Label_Loading),getString(R.string.Msg_Wait));
         headerExists = false;
         updateUI();
     }
@@ -58,11 +57,11 @@ public final class Arrivals extends Activity {
         final Context ctx = this;
         activityContext = ctx;
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
-        String flightCount = sharedPref.getString(SettingsActivity.PREF_FLIGHT_COUNT, "2");
+        String flightCount = sharedPref.getString(SettingsActivity.PREF_FLIGHT_COUNT, "1");
         String baseUrl = "http://sofiaairport.apphb.com/api/arrivals/getall?size=";
         url = baseUrl  +flightCount;
 
-        boolean isAutoSyncEnabled = sharedPref.getBoolean(SettingsActivity.PREF_AUTO_SYNC,false);
+        boolean isAutoSyncEnabled = sharedPref.getBoolean(SettingsActivity.PREF_AUTO_SYNC,true);
         if (isAutoSyncEnabled) {
             if (this.mHandler == null) {
                 this.mHandler = new Handler();
@@ -158,7 +157,7 @@ public final class Arrivals extends Activity {
         public void run()
 
         {
-            Toast.makeText(Arrivals.this, "in runnable", Toast.LENGTH_SHORT).show();
+           // Toast.makeText(ArrivalsActivity.this, "in runnable", Toast.LENGTH_SHORT).show();
             SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(activityContext);
             String autoSyncInterval = sharedPref.getString(SettingsActivity.PREF_AUTO_SYNC_INTERVAL, "60000");
             int interval = Integer.parseInt(autoSyncInterval);
@@ -167,7 +166,7 @@ public final class Arrivals extends Activity {
             final JsonArrayRequest request = getJsonArrayRequest(activityContext,listData);
             rq.add(request);
 
-            Arrivals.this.mHandler.postDelayed(m_Runnable,interval);
+            ArrivalsActivity.this.mHandler.postDelayed(m_Runnable,interval);
 
         }
 
@@ -198,6 +197,7 @@ public final class Arrivals extends Activity {
                 Flight currentFlight = (Flight) arrivalsListView.getItemAtPosition(position);
                 Intent nextScreen = new Intent(getApplicationContext(), FlightDetailsActivity.class);
                 nextScreen.putExtra("flightDetails", currentFlight);
+                nextScreen.putExtra("parentActivity","arrivals");
 
                 startActivity(nextScreen);
             }

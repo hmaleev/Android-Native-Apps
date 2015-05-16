@@ -7,7 +7,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import com.android.volley.toolbox.StringRequest;
 import com.hmaleev.sofiaairport.models.Flight;
+
+import org.w3c.dom.Text;
 
 
 public class FlightDetailsActivity extends Activity {
@@ -17,6 +20,7 @@ public class FlightDetailsActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_flight_details);
         Flight flight = (Flight) getIntent().getSerializableExtra("flightDetails");
+        String parentActivity =  getIntent().getStringExtra("parentActivity");
 
         TextView scheduledTime = (TextView)findViewById(R.id.scheduledTimeValue);
         scheduledTime.setText(flight.getScheduledTime());
@@ -24,9 +28,18 @@ public class FlightDetailsActivity extends Activity {
         TextView flightNo = (TextView)findViewById(R.id.flightNoValue);
         flightNo.setText(flight.getFlightNo());
 
-        TextView arrivesFrom = (TextView)findViewById(R.id.arrivesFromValue);
-        arrivesFrom.setText(flight.getArrivesFrom());
-
+        if (parentActivity.equalsIgnoreCase("departures")){
+            TextView label = (TextView)findViewById(R.id.arrivesFromLabel);
+            label.setText(R.string.departsForLabel);
+            TextView arrivesFrom = (TextView)findViewById(R.id.arrivesFromValue);
+            arrivesFrom.setText(flight.getDepartsFor());
+        }
+        else {
+            TextView label = (TextView)findViewById(R.id.arrivesFromLabel);
+            label.setText(R.string.arrivesFromLabel);
+            TextView arrivesFrom = (TextView) findViewById(R.id.arrivesFromValue);
+            arrivesFrom.setText(flight.getArrivesFrom());
+        }
         TextView expectedTime = (TextView)findViewById(R.id.expectedTimeValue);
         expectedTime.setText(flight.getExpectedTime());
 

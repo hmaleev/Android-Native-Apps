@@ -24,4 +24,8 @@
     <string name="flightNoHeaderLabel">Полет номер</string>
     <string name="statusHeaderLabel">Статут</string>
     <string name="terminaHeaderlLabel">Терминал</string>
+    <string name="Error_NoInternetConnection">Неуспешно свързване към Интернет. Моля проверете връзката и опитайте отново</string>
+    <string name="Error_Label">Грешка</string>
+    <string name="Label_Loading">Зареждане</string>
+    <string name="Msg_Wait">Моля изчакайте</string>
 </resources>

@@ -24,4 +24,8 @@
     <string name="flightNoHeaderLabel">Flight No</string>
     <string name="statusHeaderLabel">Status</string>
     <string name="terminaHeaderlLabel">Terminal</string>
+    <string name="Error_NoInternetConnection">Unable to  connect to the Internet. Please check your  connection and try again</string>
+    <string name="Error_Label">Error</string>
+    <string name="Label_Loading">Loading</string>
+    <string name="Msg_Wait">Please wait</string>
 </resources>

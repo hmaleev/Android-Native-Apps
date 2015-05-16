@@ -9,11 +9,12 @@
             android:title="@string/pref_title_sync_frequency"
             android:entries="@array/pref_sync_frequency_titles"
             android:entryValues="@array/pref_sync_frequency_values"
-            android:defaultValue="2"/>
+            android:defaultValue="1"/>
 
         <CheckBoxPreference
             android:key="auto_sync_enable"
-            android:title="@string/pref_title_enable_auto_sync"/>
+            android:title="@string/pref_title_enable_auto_sync"
+            android:checked="true"/>
 
         <ListPreference
             android:key="auto_sync_interval"

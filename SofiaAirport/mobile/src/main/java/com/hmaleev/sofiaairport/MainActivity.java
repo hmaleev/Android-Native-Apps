@@ -1,6 +1,9 @@
 package com.hmaleev.sofiaairport;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -17,13 +20,39 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        final Context ctx = this;
+        boolean isNetworkConnected = Utils.IsNetworkConnected(ctx);
+
+        if (!isNetworkConnected){
+
+            try {
+                AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).create();
+
+                alertDialog.setTitle(getString(R.string.Error_Label));
+                alertDialog.setMessage(getString(R.string.Error_NoInternetConnection));
+//alertDialog.setIcon(R.drawable.alerticon);
+                alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        finish();
+
+                    }
+                });
+
+                alertDialog.show();
+            }
+            catch(Exception e)
+            {
+                //Log.d(Constants.TAG, "Show Dialog: "+e.getMessage());
+            }
+
+        }
 
         ImageView arrivalsImageView = (ImageView)findViewById(R.id.arrivalsImageView);
         arrivalsImageView.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View arg0) {
                 //Starting a new Intent
-                Intent nextScreen = new Intent(getApplicationContext(), Arrivals.class);
+                Intent nextScreen = new Intent(getApplicationContext(), ArrivalsActivity.class);
 
                 startActivity(nextScreen);
 
@@ -35,7 +64,7 @@ public class MainActivity extends Activity {
 
             public void onClick(View arg0) {
                 //Starting a new Intent
-                Intent nextScreen = new Intent(getApplicationContext(), Arrivals.class);
+                Intent nextScreen = new Intent(getApplicationContext(), ArrivalsActivity.class);
 
                 startActivity(nextScreen);
 
@@ -47,7 +76,7 @@ public class MainActivity extends Activity {
 
             public void onClick(View arg0) {
                 //Starting a new Intent
-                Intent nextScreen = new Intent(getApplicationContext(), Departures.class);
+                Intent nextScreen = new Intent(getApplicationContext(), DeparturesActivity.class);
 
                 startActivity(nextScreen);
 
@@ -59,7 +88,7 @@ public class MainActivity extends Activity {
 
             public void onClick(View arg0) {
                 //Starting a new Intent
-                Intent nextScreen = new Intent(getApplicationContext(), Departures.class);
+                Intent nextScreen = new Intent(getApplicationContext(), DeparturesActivity.class);
 
                 startActivity(nextScreen);
 

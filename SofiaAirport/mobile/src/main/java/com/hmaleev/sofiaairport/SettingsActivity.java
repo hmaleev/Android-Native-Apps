@@ -71,13 +71,7 @@ public class SettingsActivity extends PreferenceActivity /*implements SharedPref
         super.onPostCreate(savedInstanceState);
 
         Context ctx = getApplicationContext();
-       /* SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(ctx);
-
-        String flightCount = preferences.getString(SettingsActivity.PREF_FLIGHT_COUNT,"2");
-*/
         setupSimplePreferencesScreen();
-
-
 
     }
 

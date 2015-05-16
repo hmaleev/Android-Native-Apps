@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/swcontDepartures"
-    tools:context="com.hmaleev.sofiaairport.Departures">
+    tools:context="com.hmaleev.sofiaairport.DeparturesActivity">
 
     <ListView
         android:layout_width="wrap_content"

@@ -35,7 +35,7 @@ public class ArrivalsAdapter extends ArrayAdapter<Flight> {
         }
         Flight flight = values.get(position);
         TextView expectedTime = (TextView) v.findViewById(R.id.tvTime);
-        expectedTime.setText(flight.getExpectedTime());
+        expectedTime.setText(flight.getScheduledTime());
         TextView from = (TextView) v.findViewById(R.id.tvFrom);
         from.setText(flight.getArrivesFrom());
         TextView status = (TextView) v.findViewById(R.id.tvStatus);

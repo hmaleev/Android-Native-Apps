@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
@@ -25,7 +26,6 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
-import com.hmaleev.sofiaairport.adapters.ArrivalsAdapter;
 import com.hmaleev.sofiaairport.adapters.DeparturesAdapter;
 import com.hmaleev.sofiaairport.models.Flight;
 
@@ -34,10 +34,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.List;
 
 
-public final class Departures extends Activity {
+public final class DeparturesActivity extends Activity {
 
     private static boolean headerExists = false;
     private static String url ="";
@@ -47,8 +46,10 @@ public final class Departures extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_departures);
+
+
         super.onCreate(savedInstanceState);
-        progress =  progress.show(this,"Loading","Please wait");
+        progress =  progress.show(this,getString(R.string.Label_Loading),getString(R.string.Msg_Wait));
         headerExists = false;
 
         updateUI();
@@ -56,11 +57,11 @@ public final class Departures extends Activity {
 
     private void updateUI() {
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
-        String flightCount = sharedPref.getString(SettingsActivity.PREF_FLIGHT_COUNT, "2");
+        String flightCount = sharedPref.getString(SettingsActivity.PREF_FLIGHT_COUNT, "1");
         String baseUrl = "http://sofiaairport.apphb.com/api/departures/getall?size=";
         url = baseUrl +flightCount;
 
-        boolean isAutoSyncEnabled = sharedPref.getBoolean(SettingsActivity.PREF_AUTO_SYNC,false);
+        boolean isAutoSyncEnabled = sharedPref.getBoolean(SettingsActivity.PREF_AUTO_SYNC,true);
 
 
         final Context ctx = this;
@@ -93,6 +94,8 @@ public final class Departures extends Activity {
                         final ListView departuresListView = (ListView) findViewById(R.id.lvDepartures);
                         if (!headerExists) {
                             addListViewHeader(departuresListView);
+                            TextView label = (TextView)findViewById(R.id.tvFrom);
+                            label.setText(R.string.departsForLabel);
                         }
 
                         final DeparturesAdapter adapter = new DeparturesAdapter(ctx, listData);
@@ -172,7 +175,7 @@ public final class Departures extends Activity {
         public void run()
 
         {
-             Toast.makeText(Departures.this, "updated", Toast.LENGTH_SHORT).show();
+          //   Toast.makeText(DeparturesActivity.this, "updated", Toast.LENGTH_SHORT).show();
             SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(activityContext);
             String autoSyncInterval = sharedPref.getString(SettingsActivity.PREF_AUTO_SYNC_INTERVAL, "60000");
             int interval = Integer.parseInt(autoSyncInterval);
@@ -182,7 +185,7 @@ public final class Departures extends Activity {
             final JsonArrayRequest request = getJsonArrayRequest(activityContext,listData);
             rq.add(request);
 
-            Departures.this.mHandler.postDelayed(m_Runnable,interval);
+            DeparturesActivity.this.mHandler.postDelayed(m_Runnable,interval);
         }
 
     };
@@ -281,6 +284,7 @@ public final class Departures extends Activity {
                 Flight currentFlight = (Flight) departuresListView.getItemAtPosition(position);
                 Intent nextScreen = new Intent(getApplicationContext(), FlightDetailsActivity.class);
                 nextScreen.putExtra("flightDetails", currentFlight);
+                nextScreen.putExtra("parentActivity","departures");
 
                 startActivity(nextScreen);
             }
