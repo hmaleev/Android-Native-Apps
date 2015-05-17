@@ -19,8 +19,10 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.RetryPolicy;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
@@ -109,6 +111,10 @@ public final class ArrivalsActivity extends Activity {
         });
 
 
+        int socketTimeout = 10000;//15 seconds
+        RetryPolicy policy = new DefaultRetryPolicy(socketTimeout, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+        jReq.setRetryPolicy(policy);
+
         rq.add(jReq);
 
         swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
@@ -164,6 +170,11 @@ public final class ArrivalsActivity extends Activity {
             final ArrayList<Flight> listData = new ArrayList<>();
             final RequestQueue rq = Volley.newRequestQueue(activityContext);
             final JsonArrayRequest request = getJsonArrayRequest(activityContext,listData);
+
+            int socketTimeout = 10000;//15 seconds
+            RetryPolicy policy = new DefaultRetryPolicy(socketTimeout, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+            request.setRetryPolicy(policy);
+
             rq.add(request);
 
             ArrivalsActivity.this.mHandler.postDelayed(m_Runnable,interval);
