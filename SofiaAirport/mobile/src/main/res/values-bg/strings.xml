@@ -28,4 +28,8 @@
     <string name="Error_Label">Грешка</string>
     <string name="Label_Loading">Зареждане</string>
     <string name="Msg_Wait">Моля изчакайте</string>
+    <string name="action_navigation_to_airport">Навигиране до летище София</string>
+    <string name="lblTerminal1">Терминал 1</string>
+    <string name="lblTerminal2">Терминал 2</string>
+    <string name="lblNavigetToTerminal">Изберете терминал</string>
 </resources>

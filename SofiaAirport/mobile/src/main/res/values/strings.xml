@@ -28,4 +28,8 @@
     <string name="Error_Label">Error</string>
     <string name="Label_Loading">Loading</string>
     <string name="Msg_Wait">Please wait</string>
+    <string name="action_navigation_to_airport">Navigate to Airport</string>
+    <string name="lblTerminal1">Terminal 1</string>
+    <string name="lblTerminal2">Terminal 2</string>
+    <string name="lblNavigetToTerminal">Select terminal</string>
 </resources>

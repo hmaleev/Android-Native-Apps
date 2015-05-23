@@ -1,10 +1,14 @@
 package com.hmaleev.sofiaairport;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
@@ -17,7 +21,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.RequestQueue;
@@ -261,9 +264,46 @@ public final class ArrivalsActivity extends Activity {
             Intent nextScreen = new Intent(getApplicationContext(), SettingsActivity.class);
             startActivity(nextScreen);
         }
+        if (id == R.id.action_navigateToAirport) {
+            //    return true;
+
+            Dialog dialog = createDialog();
+            dialog.show();
+
+
+        }
 
         return super.onOptionsItemSelected(item);
     }
+
+    private Dialog createDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(ArrivalsActivity.this);
+        builder.setTitle(getString(R.string.lblNavigetToTerminal))
+                .setItems(new String[]{getString(R.string.lblTerminal1), getString(R.string.lblTerminal2)}, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // The 'which' argument contains the index position
+                        // of the selected item
+                        switch (which) {
+                            case 0: {
+                                Uri gmmIntentUri = Uri.parse("google.navigation:q=Sofia+Airport,+Bulgaria");
+                                Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                                // mapIntent.setPackage("com.google.android.apps.maps");
+                                startActivity(mapIntent);
+                                break;
+                            }
+                            case 1: {
+                                Uri gmmIntentUri = Uri.parse("google.navigation:q=Sofia+Airport+Terminal+2,+Bulgaria");
+                                Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                                // mapIntent.setPackage("com.google.android.apps.maps");
+                                startActivity(mapIntent);
+                            }
+                        }
+
+                    }
+                });
+        return builder.create();
+    }
+
 
     private JsonArrayRequest getJsonArrayRequest(final Context ctx, final ArrayList<Flight> listData) {
         return new JsonArrayRequest(url,
