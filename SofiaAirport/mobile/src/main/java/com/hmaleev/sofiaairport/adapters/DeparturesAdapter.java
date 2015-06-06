@@ -1,9 +1,13 @@
 package com.hmaleev.sofiaairport.adapters;
 
 import android.content.Context;
+import android.graphics.Point;
+import android.util.DisplayMetrics;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -18,7 +22,7 @@ public class DeparturesAdapter extends ArrayAdapter<Flight> {
     private final ArrayList<Flight> values;
 
     public DeparturesAdapter(Context context,  ArrayList<Flight> values) {
-        super(context, R.layout.arrivals_list_row_odd, values);
+        super(context, R.layout.flight_list_row, values);
         this.context = context;
         this.values = values;
     }
@@ -29,7 +33,7 @@ public class DeparturesAdapter extends ArrayAdapter<Flight> {
         View listRowView = convertView;
         if (listRowView == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            listRowView = inflater.inflate(R.layout.arrivals_list_row_even, parent,false);
+            listRowView = inflater.inflate(R.layout.flight_list_row, parent,false);
         }
         else {
             listRowView = convertView;
@@ -45,6 +49,23 @@ public class DeparturesAdapter extends ArrayAdapter<Flight> {
         status.setText(flight.getStatus());
         TextView terminal = (TextView) listRowView.findViewById(R.id.tvTerminal);
         terminal.setText(flight.getTerminal());
+
+        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        Display display = wm.getDefaultDisplay();
+
+        Point size = new Point();
+        display.getSize(size);
+        int width = size.x;
+        DisplayMetrics metrics = new DisplayMetrics();
+        display.getMetrics(metrics);
+        float dp = width / (metrics.densityDpi / 160f);
+
+        if (dp>480) {
+            TextView expected = (TextView) listRowView.findViewById(R.id.tvExpected);
+            expected.setText(flight.getExpectedTime());
+            TextView flightNo = (TextView) listRowView.findViewById(R.id.tvFlightNo);
+            flightNo.setText(flight.getFlightNo());
+        }
 
         RelativeLayout layout_item = (RelativeLayout) listRowView.findViewById(R.id.row);
 

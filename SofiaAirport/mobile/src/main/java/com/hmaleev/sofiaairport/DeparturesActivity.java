@@ -232,7 +232,7 @@ public final class DeparturesActivity extends Activity {
 
     private void addListViewHeader(ListView departuresListView) {
         LayoutInflater inflater = getLayoutInflater();
-        ViewGroup header = (ViewGroup)inflater.inflate(R.layout.arrivals_list_row_header, departuresListView, false);
+        ViewGroup header = (ViewGroup)inflater.inflate(R.layout.flight_list_row_header, departuresListView, false);
         departuresListView.addHeaderView(header, null, false);
         headerExists = true;
     }

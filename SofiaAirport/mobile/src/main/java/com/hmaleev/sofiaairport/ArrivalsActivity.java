@@ -196,7 +196,7 @@ public final class ArrivalsActivity extends Activity {
 
     private void addListViewHeader(ListView arrivalsListView) {
         LayoutInflater inflater = getLayoutInflater();
-        ViewGroup header = (ViewGroup)inflater.inflate(R.layout.arrivals_list_row_header, arrivalsListView, false);
+        ViewGroup header = (ViewGroup)inflater.inflate(R.layout.flight_list_row_header, arrivalsListView, false);
         arrivalsListView.addHeaderView(header, null, false);
         headerExists = true;
 
