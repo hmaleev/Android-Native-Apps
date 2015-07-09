@@ -32,4 +32,5 @@
     <string name="lblTerminal1">Terminal 1</string>
     <string name="lblTerminal2">Terminal 2</string>
     <string name="lblNavigetToTerminal">Select terminal</string>
+    <string name="msgInstallGoogleMaps">Please install Google Maps</string>
 </resources>

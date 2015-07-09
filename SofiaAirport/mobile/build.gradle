@@ -15,8 +15,8 @@ android {
         applicationId "com.hmaleev.sofiaairport2"
         minSdkVersion 14
         targetSdkVersion 21
-        versionCode 120
-        versionName "1.2.0"
+        versionCode 121
+        versionName "1.2.1"
     }
     buildTypes {
         release {
@@ -32,6 +32,5 @@ dependencies {
     //wearApp project(':wear')
     compile project(':volley')
     // compile 'com.android.support:support-v4:22.0.0'
-    compile 'com.google.android.gms:play-services:7.5.0'
-    compile 'com.android.support:support-v4:22.2.0'
+    compile 'com.google.android.gms:play-services:7.3.0'
 }

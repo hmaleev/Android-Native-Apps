@@ -9,6 +9,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -23,6 +25,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.RequestQueue;
@@ -39,6 +42,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 public final class DeparturesActivity extends Activity {
@@ -58,6 +62,17 @@ public final class DeparturesActivity extends Activity {
         headerExists = false;
 
         updateUI();
+    }
+
+    private boolean CheckIsGoogleMapsAvailable() {
+        PackageManager pm = getPackageManager();
+        try {
+            pm. getPackageGids ("com.google.android.apps.maps");
+        } catch (PackageManager.NameNotFoundException e) {
+            Toast.makeText(activityContext, getString(R.string.msgInstallGoogleMaps), Toast.LENGTH_LONG).show();
+            return false;
+        }
+        return true;
     }
 
     private void updateUI() {
@@ -284,6 +299,9 @@ public final class DeparturesActivity extends Activity {
         if (id == R.id.action_navigateToAirport) {
             //    return true;
 
+            if (!CheckIsGoogleMapsAvailable()){
+                return  false;
+            }
             Dialog dialog = createDialog();
             dialog.show();
 
@@ -305,8 +323,17 @@ public final class DeparturesActivity extends Activity {
                             case 0: {
                                 Uri gmmIntentUri = Uri.parse("google.navigation:q=Sofia+Airport,+Bulgaria");
                                 Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
-                                // mapIntent.setPackage("com.google.android.apps.maps");
-                                startActivity(mapIntent);
+
+                                PackageManager packageManager = getPackageManager();
+                                List<ResolveInfo> activities = packageManager.queryIntentActivities(mapIntent, 0);
+                                boolean isIntentSafe = activities.size() > 0;
+                                if (isIntentSafe) {
+                                    startActivity(mapIntent);
+                                }
+                                else {
+
+                                    Toast.makeText(activityContext, "Please install Google Maps", Toast.LENGTH_LONG).show();
+                                }
                                 break;
                             }
                             case 1: {

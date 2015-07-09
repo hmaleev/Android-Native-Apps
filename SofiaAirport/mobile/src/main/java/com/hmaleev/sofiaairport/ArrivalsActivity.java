@@ -8,6 +8,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -21,6 +23,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.RequestQueue;
@@ -37,6 +40,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public final class ArrivalsActivity extends Activity {
 
@@ -267,6 +271,10 @@ public final class ArrivalsActivity extends Activity {
         if (id == R.id.action_navigateToAirport) {
             //    return true;
 
+
+            if (!CheckIsGoogleMapsAvailable()){
+                return  false;
+            }
             Dialog dialog = createDialog();
             dialog.show();
 
@@ -276,19 +284,36 @@ public final class ArrivalsActivity extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
+    private boolean CheckIsGoogleMapsAvailable() {
+        PackageManager pm = getPackageManager();
+        try {
+            pm. getPackageGids ("com.google.android.apps.maps");
+        } catch (PackageManager.NameNotFoundException e) {
+            Toast.makeText(activityContext, getString(R.string.msgInstallGoogleMaps), Toast.LENGTH_LONG).show();
+            return false;
+        }
+        return true;
+    }
+
     private Dialog createDialog() {
+
         AlertDialog.Builder builder = new AlertDialog.Builder(ArrivalsActivity.this);
         builder.setTitle(getString(R.string.lblNavigetToTerminal))
                 .setItems(new String[]{getString(R.string.lblTerminal1), getString(R.string.lblTerminal2)}, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         // The 'which' argument contains the index position
                         // of the selected item
+
+
+
                         switch (which) {
                             case 0: {
                                 Uri gmmIntentUri = Uri.parse("google.navigation:q=Sofia+Airport,+Bulgaria");
                                 Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
-                                // mapIntent.setPackage("com.google.android.apps.maps");
+
                                 startActivity(mapIntent);
+                              //  Toast.makeText(activityContext, "Please install Google Maps", Toast.LENGTH_LONG).show();
+
                                 break;
                             }
                             case 1: {

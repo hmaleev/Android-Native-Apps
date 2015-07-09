@@ -6,6 +6,8 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
@@ -13,11 +15,27 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import java.util.List;
 
 import static android.app.PendingIntent.getActivity;
 
 
 public class MainActivity extends Activity {
+
+    private static Context activityCtx;
+
+    private boolean CheckIsGoogleMapsAvailable() {
+        PackageManager pm = getPackageManager();
+        try {
+            pm. getPackageGids ("com.google.android.apps.maps");
+        } catch (PackageManager.NameNotFoundException e) {
+            Toast.makeText(activityCtx, getString(R.string.msgInstallGoogleMaps), Toast.LENGTH_LONG).show();
+            return false;
+        }
+        return true;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +43,7 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
 
         final Context ctx = this;
+        activityCtx = ctx;
         boolean isNetworkConnected = Utils.IsNetworkConnected(ctx);
 
         if (!isNetworkConnected){
@@ -125,6 +144,9 @@ public class MainActivity extends Activity {
         if (id == R.id.action_navigateToAirport) {
             //    return true;
 
+            if (!CheckIsGoogleMapsAvailable()){
+                return  false;
+            }
             Dialog dialog = createDialog();
             dialog.show();
 
@@ -146,18 +168,15 @@ public class MainActivity extends Activity {
                             case 0: {
                                 Uri gmmIntentUri = Uri.parse("google.navigation:q=Sofia+Airport,+Bulgaria");
                                 Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
-                                // mapIntent.setPackage("com.google.android.apps.maps");
                                 startActivity(mapIntent);
                                 break;
                             }
                             case 1:{
                                 Uri gmmIntentUri = Uri.parse("google.navigation:q=Sofia+Airport+Terminal+2,+Bulgaria");
                                 Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
-                                // mapIntent.setPackage("com.google.android.apps.maps");
                                 startActivity(mapIntent);
                             }
                         }
-
                     }
                 });
         return builder.create();
