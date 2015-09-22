@@ -66,7 +66,7 @@ public final class ArrivalsActivity extends Activity {
         final Context ctx = this;
         activityContext = ctx;
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
-        String flightCount = sharedPref.getString(SettingsActivity.PREF_FLIGHT_COUNT, "1");
+        String flightCount = sharedPref.getString(SettingsActivity.PREF_FLIGHT_COUNT, "10");
         String baseUrl = "http://sofiaairport.apphb.com/api/arrivals/getall?size=";
         url = baseUrl  +flightCount;
 

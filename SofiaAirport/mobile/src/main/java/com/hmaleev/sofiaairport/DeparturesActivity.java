@@ -77,7 +77,7 @@ public final class DeparturesActivity extends Activity {
 
     private void updateUI() {
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
-        String flightCount = sharedPref.getString(SettingsActivity.PREF_FLIGHT_COUNT, "1");
+        String flightCount = sharedPref.getString(SettingsActivity.PREF_FLIGHT_COUNT, "10");
         String baseUrl = "http://sofiaairport.apphb.com/api/departures/getall?size=";
         url = baseUrl +flightCount;
 

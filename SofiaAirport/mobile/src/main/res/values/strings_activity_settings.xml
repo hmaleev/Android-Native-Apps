@@ -11,9 +11,9 @@
         <item>30</item>
     </string-array>
     <string-array name="pref_sync_frequency_values">
-        <item>1</item>
-        <item>2</item>
-        <item>3</item>
+        <item>10</item>
+        <item>20</item>
+        <item>30</item>
     </string-array>
 
     <string name="pref_title_auto_sync_frequency">Auto sync interval (in seconds)</string>
