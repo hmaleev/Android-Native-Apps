@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+    <item android:title="Tags">
+        <menu>
+            <item
+                android:icon="@drawable/ic_label_black_24dp"
+                android:title="Placeholder" />
+            <item
+                android:icon="@drawable/ic_label_black_24dp"
+                android:title="Placeholder" />
+            <item
+                android:icon="@drawable/ic_label_black_24dp"
+                android:title="Placeholder" />
+        </menu>
+    </item>
+
+    <item android:title="Tools">
+        <menu>
+            <item
+                android:icon="@drawable/ic_color_lens_black_24dp"
+                android:title="Change color" />
+            <item
+                android:icon="@drawable/ic_add_black_24dp"
+                android:title="Add tag" />
+        </menu>
+    </item>
+</menu>
