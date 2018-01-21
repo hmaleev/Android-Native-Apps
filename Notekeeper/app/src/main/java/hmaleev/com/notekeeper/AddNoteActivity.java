@@ -1,8 +1,9 @@
 package hmaleev.com.notekeeper;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -13,7 +14,11 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-public class AddNote extends AppCompatActivity
+import java.util.List;
+
+import hmaleev.com.notekeeper.Models.Note;
+
+public class AddNoteActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     @Override
@@ -27,8 +32,17 @@ public class AddNote extends AppCompatActivity
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
+              AppDatabase db = AppDatabase.getAppDatabase(AddNoteActivity.this);
+              Note note = new Note();
+              note.setContent("TEST");
+              note.setTitle("TEST TITLE");
+              db.noteDao().insert(note);
+              List<Note> notes = db.noteDao().getAll();
+              Log.i("INFO", "inserted");
+
+                Intent intent = new Intent(AddNoteActivity.this, MainActivity.class);
+                startActivity(intent);
+
             }
         });
 
