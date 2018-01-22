@@ -13,6 +13,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import java.util.List;
 
@@ -33,16 +35,21 @@ public class AddNoteActivity extends AppCompatActivity
             @Override
             public void onClick(View view) {
               AppDatabase db = AppDatabase.getAppDatabase(AddNoteActivity.this);
+
+              EditText noteTitleField = (EditText)findViewById(R.id.noteTitle);
+              String title = noteTitleField.getText().toString();
+              EditText noteContentField = (EditText)findViewById(R.id.noteContent);
+              String content = noteContentField.getText().toString();
+
               Note note = new Note();
-              note.setContent("TEST");
-              note.setTitle("TEST TITLE");
+              note.setContent(content);
+              note.setTitle(title);
+
               db.noteDao().insert(note);
-              List<Note> notes = db.noteDao().getAll();
-              Log.i("INFO", "inserted");
+              Log.i("INFO", "note inserted");
 
-                Intent intent = new Intent(AddNoteActivity.this, MainActivity.class);
-                startActivity(intent);
-
+              Intent intent = new Intent(AddNoteActivity.this, MainActivity.class);
+              startActivity(intent);
             }
         });
 
