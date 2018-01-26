@@ -44,7 +44,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         NoteAdapter adapter = new NoteAdapter(this,contacts);
         mRecyclerView.setAdapter(adapter);
 
-        mRecyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
         // Set layout manager to position the items
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
