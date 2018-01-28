@@ -8,6 +8,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -20,6 +21,7 @@ import java.util.List;
 
 import hmaleev.com.notekeeper.DAO.NoteDao;
 import hmaleev.com.notekeeper.Models.Note;
+
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -46,7 +48,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         // Set layout manager to position the items
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-
 
         FloatingActionButton fab = findViewById(R.id.addNoteBtn);
         fab.setOnClickListener(new View.OnClickListener() {

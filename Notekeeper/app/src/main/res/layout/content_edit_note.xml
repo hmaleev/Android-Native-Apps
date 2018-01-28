@@ -2,37 +2,37 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/constraintLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="hmaleev.com.notekeeper.AddNoteActivity"
-    tools:showIn="@layout/activity_add_note">
+    tools:context="hmaleev.com.notekeeper.EditNote"
+    tools:showIn="@layout/activity_edit_note">
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/saveBtn"
+        android:id="@+id/editBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="16dp"
-        android:src="@drawable/ic_check_black_24dp"
-        android:tint="#fff"
-        app:backgroundTint="@android:color/holo_green_dark"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        android:tint="#FFFFFF"
+        app:backgroundTint="@android:color/holo_green_dark"
+        android:src="@drawable/ic_save_black_24dp" />
 
     <android.support.design.widget.TextInputLayout
-        android:id="@+id/noteTitleLabelLayout"
+        android:id="@+id/editNoteTitleLabelLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        app:hintTextAppearance="@style/HintText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:hintTextAppearance="@style/HintText"
+        >
 
         <EditText
-            android:id="@+id/noteTitle"
+            android:id="@+id/editNoteTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
@@ -46,18 +46,19 @@
 
 
     <android.support.design.widget.TextInputLayout
-        android:id="@+id/noteTitleLabelLayout2"
+        android:id="@+id/editNoteTitleLabelLayout2"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="8dp"
-        app:hintTextAppearance="@style/HintText"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/noteTitleLabelLayout">
+        app:layout_constraintTop_toBottomOf="@+id/editNoteTitleLabelLayout"
+        app:hintTextAppearance="@style/HintText"
+        >
 
         <EditText
-            android:id="@+id/noteContent"
+            android:id="@+id/editNoteContent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
